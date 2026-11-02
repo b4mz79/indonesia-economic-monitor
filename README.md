@@ -119,7 +119,7 @@ File publik: [`household_welfare_indicators.csv`](household_welfare_indicators.c
 7. **Gini Ratio** — ketimpangan distribusi pengeluaran, bukan pendapatan.
 8. **Porsi pengeluaran 40% terbawah** — ukuran distribusi pengeluaran menurut kriteria Bank Dunia.
 9. **Setengah pengangguran** — tingkat dan jumlah pekerja yang masih menginginkan/tersedia untuk tambahan jam/pekerjaan; indikator labor underutilization yang tidak tertangkap hanya oleh TPT.
-10. **Jumlah angkatan kerja dan penduduk bekerja** — ukuran stok tenaga kerja nasional pada November 2025 dan Februari 2026.
+10. **Jumlah angkatan kerja, penduduk bekerja, dan penganggur** — ukuran stok tenaga kerja nasional pada November 2025, Februari dan Mei 2026.
 11. **Garis kemiskinan per kapita/bulan** — batas minimum pengeluaran nasional untuk makanan dan nonmakanan.
 
 Frekuensi dan periode sumber dipertahankan:
@@ -131,6 +131,8 @@ Frekuensi dan periode sumber dipertahankan:
 Satu indikator tidak cukup untuk mewakili daya beli. Kombinasi pengeluaran riil per kapita, upah, kemiskinan, distribusi pengeluaran, TPT, setengah pengangguran, TPAK, informalitas, jumlah penduduk bekerja, dan garis kemiskinan memberikan konteks yang lebih luas. Kualitas pekerjaan, jam kerja, dan pendapatan rumah tangga tetap perlu diperluas saat seri data yang sebanding tersedia. Seri setengah pengangguran nasional kini mencakup 2023 (6,68%), 2024 (7,99%), 2025 (7,91%), dan Februari 2026 (7,27%). BPS mencatat jumlah setengah penganggur 9,34 juta pada 2023 dan 11,56 juta pada 2024.
 
 - BPS — [Keadaan Angkatan Kerja Indonesia Februari 2026](https://www.bps.go.id/id/publication/2026/06/26/96b31cf730df9e84f17bfe03/keadaan-angkatan-kerja-di-) dan rilis Sakernas Mei 2026 — ketenagakerjaan, TPT, TPAK, upah dan jumlah penduduk bekerja.
+- BPS — [Sakernas Mei 2026](https://www.bps.go.id/id/pressrelease/2026/08/05/2606/tingkat-pengangguran-terbuka-tpt-sebesar-4-65-persen-rata-rata-upah-buruh-sebesar-3-39-juta-rupiah.html) — TPT, TPAK, upah, angkatan kerja, penduduk bekerja.
+- BPS — [Sakernas Februari 2026](https://www.bps.go.id/id/news/2026/05/06/910/ekonomi-indonesia-resilien-dan-tumbuh-solid--pada-triwulan-i-2026.html) — jumlah penganggur, TPT dan setengah pengangguran.
 - BPS — [Indikator Pekerjaan Layak di Indonesia 2024](https://web-api.bps.go.id/download.php?f=V3QKN8oEbZwBYEUHwdWdZHJGOUx6eTJqUXQ4M2o0dldpTmMrUEVwNHB1ZTMvZEFyVDVmcVhPNFU4NVRtcFNta2R1TGI1N0txQ29oWnVFRnM0Tm5HMUVxMk9nbHlGd1dKcVYzaDk2QXpCQ04rVHJKNVB5WkJscUg3RGFxUFN4WjRsR3R3aWJ1dDl0bzE2VzRCbmxSSDdHcmg2eEJWKzFVOWdmMDZnbHhEUms5NWxFb3dFcFh1akxXM0RQRjNxTVluOHorYWVFZHU2dHg5bVV3b1RMZStSZTNZVDVublNudTlRRnFyWU5mWjlPcVRta1JhelNxaTZHclVTaWpHak1mdHZmN2JzZzgxRXB2ZzFuTkgvNFh0ODlGK1paTHdnPT0%3D) — setengah pengangguran dan indikator pekerjaan layak.
 
 ## Food Price Database (FPDB)
@@ -270,6 +272,8 @@ Kerangka dashboard menggunakan informasi dan/atau dataset publik dari sejumlah i
 - [Bank Indonesia](https://www.bi.go.id/) — PIHPS dan publikasi terkait pemantauan harga pangan.
 - [Badan Pangan Nasional](https://badanpangan.go.id/) — informasi dan pemantauan harga pangan.
 - [Kementerian ESDM](https://www.esdm.go.id/) — kebijakan energi, BBM, dan regulasi/komunikasi terkait listrik.
+- [JDIH Kota Bandung](https://jdih.bandung.go.id/home/produk-hukum/peraturan-perundang-undangan-daerah/24800), [Database Peraturan BPK](https://peraturan.bpk.go.id/Details/327304/perbup-kab-bandung-no-91-tahun-2025), dan [e-Pasar Kota Cimahi](https://e-pasar.cimahikota.go.id/komoditas/lpg-3kg1763348252) — HET LPG 3 kg dan harga pantauan pasar regional.
+- [Bisnis.com](https://ekonomi.bisnis.com/read/20260715/44/1988225/daftar-harga-lpg-bright-gas-pertamina-terbaru-15-juli-2026) dan [detikFinance](https://finance.detik.com/energi/d-8619653/harga-bright-gas-pertamina-turun) — harga agen LPG nonsubsidi regional.
 - [PLN](https://web.pln.co.id/) — statistik kelistrikan dan informasi tarif.
 
 Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tidak memperbolehkan pengguna menyiratkan bahwa World Bank mendukung produk atau analisis turunan. Periksa ketentuan katalog yang berlaku dan batasan pada materi sumber sebelum mendistribusikan ulang data. Proyek ini tidak didukung atau disahkan oleh institusi yang disebutkan di atas.
