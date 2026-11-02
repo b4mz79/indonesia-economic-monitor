@@ -253,8 +253,9 @@ a{color:var(--blue)}
     </div>
    </div>
    <p class="small" id="lpgInfo">
-    HET LPG 3 kg Kota Bandung merupakan contoh regional, bukan representasi
-    nasional. Catatan LPG nonsubsidi adalah snapshot harga tingkat agen;
+    HET LPG 3 kg ditetapkan per kabupaten/kota dan dapat berbeda bahkan di
+    dalam satu aglomerasi. Catatan e-Pasar adalah harga pantauan pasar, bukan
+    HET pangkalan. Catatan LPG nonsubsidi adalah snapshot harga tingkat agen;
     distribusi di luar radius acuan dapat menambah biaya.
    </p>
   </div>
@@ -572,7 +573,7 @@ a{color:var(--blue)}
  </section>
 
  <footer>
-  <b>INDONESIA HOUSEHOLD COST & BASIC NEEDS DASHBOARD — V5</b><br>
+  <b>INDONESIA HOUSEHOLD COST & BASIC NEEDS DASHBOARD — V6</b><br>
   Historical policy events, price data import, household exposure and scenario simulation.<br>
   Historical observations, policy announcements and scenario assumptions are
   intentionally separated. This is an independent analytical dashboard, not
@@ -1346,6 +1347,8 @@ let welfareChart=null;
 function lpgStatusLabel(status){
  return ({
   observed_reported:'Harga/HET dilaporkan',
+  observed_market_price:'Harga pantauan e-Pasar',
+  legal_effective:'HET berlaku menurut peraturan',
   reported_implemented:'Pelaksanaan dilaporkan',
   legal_effective_date_later_implemented:'Jadwal keputusan; pelaksanaan bergeser',
   conditional_schedule_unverified:'Jadwal kondisional; belum diverifikasi'
@@ -1422,7 +1425,7 @@ function renderLPGData(){
  document.getElementById('lpgInfo').textContent=
   count+' observasi ditampilkan. '+(planned?
    planned+' catatan berstatus jadwal kondisional dan belum dipastikan terlaksana. ':'')+
-  'HET LPG subsidi 3 kg ditentukan daerah; data Bandung tidak mewakili kabupaten/kota lain. '+
+  'HET LPG subsidi 3 kg ditentukan daerah; data Kota Bandung, Kabupaten Bandung, dan Kota Cimahi adalah tiga ketetapan/observasi berbeda, bukan satu tarif Bandung Raya. '+
   'Harga Bright Gas nonsubsidi adalah harga di tingkat agen sesuai zona/radius yang disebut sumber, bukan selalu harga sampai rumah.';
 }
 
@@ -1465,6 +1468,12 @@ document.getElementById('lpgDownload').addEventListener('click',()=>energyDownlo
 const welfareHelp={
  adjusted_real_per_capita_expenditure:'Proxy standar hidup layak: rata-rata konsumsi tahunan per kapita yang disesuaikan dengan IHK dan PPP. Bukan gaji atau pendapatan disposabel.',
  average_monthly_wage:'Rata-rata upah buruh/karyawan/pegawai secara nominal. Tidak mewakili semua pekerja informal dan belum dideflasi dengan IHK.',
+ half_unemployment_rate:'Proporsi penduduk bekerja yang termasuk setengah penganggur dibanding seluruh penduduk bekerja. Ini mengukur kekurangan pemanfaatan tenaga kerja, bukan TPT.',
+ half_unemployed_population:'Jumlah orang yang bekerja tetapi termasuk setengah penganggur; berbeda dengan jumlah penganggur terbuka.',
+ labor_force_population:'Jumlah penduduk yang bekerja atau sedang mencari pekerjaan/termasuk angkatan kerja menurut definisi BPS.',
+ employed_population:'Jumlah penduduk yang bekerja menurut definisi Sakernas BPS.',
+ unemployed_population:'Jumlah penduduk penganggur; jangan disamakan dengan setengah penganggur.',
+ poverty_line_per_capita_monthly:'Garis kemiskinan per kapita per bulan, yaitu nilai minimum pengeluaran untuk kebutuhan makanan dan bukan makanan. Bukan batas anggaran ideal rumah tangga.'
  open_unemployment_rate:'TPT: jumlah penganggur sebagai persentase angkatan kerja. Seri titik Agustus tahunan; Februari 2026 adalah periode survei berbeda.',
  labor_force_participation_rate:'TPAK: proporsi penduduk usia kerja yang termasuk angkatan kerja.',
  informal_employment_share:'Proporsi pekerja pada kegiatan informal menurut klasifikasi BPS.',
