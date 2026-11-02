@@ -26,6 +26,9 @@ header {
 .eyebrow {color:var(--cyan);font-size:11px;letter-spacing:2px;font-weight:700}
 h1 {font-size:clamp(24px,4vw,36px);margin:8px 0}
 .subtitle {color:var(--muted);max-width:850px}
+.header-topline{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.home-link{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid var(--line);border-radius:8px;color:var(--cyan);font-size:12px;font-weight:650;background:rgba(34,211,238,.05)}
+.home-link:hover{background:rgba(34,211,238,.12);text-decoration:none}
 main {max-width:1500px;margin:auto;padding:24px}
 .section-title {
   display:flex;align-items:center;justify-content:space-between;
@@ -99,7 +102,10 @@ a:hover {text-decoration:underline}
 </head>
 <body>
 <header>
-  <div class="eyebrow">MACROECONOMIC INTELLIGENCE • INDONESIA</div>
+  <div class="header-topline">
+    <div class="eyebrow">MACROECONOMIC INTELLIGENCE • INDONESIA</div>
+    <a class="home-link" href="index.html" aria-label="Back to Home">← Back to Home</a>
+  </div>
   <h1>Indonesia Economic Risk Dashboard</h1>
   <div class="subtitle">
     Historical indicators: October 2016–October 2026 |
