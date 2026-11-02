@@ -109,7 +109,7 @@ Setiap baris memuat tanggal observasi, produk/kapasitas, harga per tabung, lokas
 
 ## Household Welfare and Labour Market Dataset
 
-File publik: [`household_welfare_indicators.csv`](household_welfare_indicators.csv). Dataset saat ini berisi delapan keluarga indikator:
+File publik: [`household_welfare_indicators.csv`](household_welfare_indicators.csv). Dataset saat ini berisi sebelas kelompok indikator:
 1. **Pengeluaran riil per kapita per tahun yang disesuaikan** — proxy standar hidup layak berdasarkan konsumsi Susenas yang disesuaikan dengan IHK dan PPP (komponen IPM). Nilai bukan pendapatan disposabel atau upah.
 2. **Upah rata-rata buruh** — nilai nominal bulanan pekerja buruh/karyawan/pegawai. Belum dideflasi dan tidak mencakup semua pekerja mandiri/informal.
 3. **TPT** — penganggur sebagai persentase angkatan kerja.
@@ -123,12 +123,15 @@ File publik: [`household_welfare_indicators.csv`](household_welfare_indicators.c
 11. **Garis kemiskinan per kapita/bulan** — batas minimum pengeluaran nasional untuk makanan dan nonmakanan.
 
 Frekuensi dan periode sumber dipertahankan:
-- Sakernas umumnya menggunakan observasi Februari atau Agustus; jangan menyatukan keduanya seolah satu survei bulanan.
+- Sakernas menggunakan titik periode survei yang disebutkan dalam rilis (antara lain Agustus, November 2025, Februari dan Mei 2026); jangan menganggapnya sebagai seri bulanan kontinu.
 - Kemiskinan, Gini, dan distribusi pengeluaran memakai periode Susenas Maret/September yang tersedia.
 - Pengeluaran riil per kapita yang disesuaikan merupakan indikator IPM tahunan; nilai 2020–2025 menggunakan seri nasional BPS.
 - Semua nilai upah pada file adalah **nominal**. Penghitungan upah riil memerlukan deflator IHK yang periodenya cocok; dashboard tidak membuat klaim upah riil dari selisih inflasi sederhana.
 
-Satu indikator tidak cukup untuk mewakili daya beli. Kombinasi pengeluaran riil per kapita, upah, kemiskinan, distribusi pengeluaran, TPT, setengah pengangguran, TPAK, informalitas, jumlah penduduk bekerja, dan garis kemiskinan memberikan konteks yang lebih luas. Kualitas pekerjaan, jam kerja, dan pendapatan rumah tangga tetap perlu diperluas saat seri data yang sebanding tersedia. Seri setengah pengangguran nasional 2023–2024 kini telah ditambahkan: 6,68% menjadi 7,99%, atau 9,34 juta menjadi 11,56 juta pekerja.
+Satu indikator tidak cukup untuk mewakili daya beli. Kombinasi pengeluaran riil per kapita, upah, kemiskinan, distribusi pengeluaran, TPT, setengah pengangguran, TPAK, informalitas, jumlah penduduk bekerja, dan garis kemiskinan memberikan konteks yang lebih luas. Kualitas pekerjaan, jam kerja, dan pendapatan rumah tangga tetap perlu diperluas saat seri data yang sebanding tersedia. Seri setengah pengangguran nasional kini mencakup 2023 (6,68%), 2024 (7,99%), 2025 (7,91%), dan Februari 2026 (7,27%). BPS mencatat jumlah setengah penganggur 9,34 juta pada 2023 dan 11,56 juta pada 2024.
+
+- BPS — [Keadaan Angkatan Kerja Indonesia Februari 2026](https://www.bps.go.id/id/publication/2026/06/26/96b31cf730df9e84f17bfe03/keadaan-angkatan-kerja-di-) dan rilis Sakernas Mei 2026 — ketenagakerjaan, TPT, TPAK, upah dan jumlah penduduk bekerja.
+- BPS — [Indikator Pekerjaan Layak di Indonesia 2024](https://web-api.bps.go.id/download.php?f=V3QKN8oEbZwBYEUHwdWdZHJGOUx6eTJqUXQ4M2o0dldpTmMrUEVwNHB1ZTMvZEFyVDVmcVhPNFU4NVRtcFNta2R1TGI1N0txQ29oWnVFRnM0Tm5HMUVxMk9nbHlGd1dKcVYzaDk2QXpCQ04rVHJKNVB5WkJscUg3RGFxUFN4WjRsR3R3aWJ1dDl0bzE2VzRCbmxSSDdHcmg2eEJWKzFVOWdmMDZnbHhEUms5NWxFb3dFcFh1akxXM0RQRjNxTVluOHorYWVFZHU2dHg5bVV3b1RMZStSZTNZVDVublNudTlRRnFyWU5mWjlPcVRta1JhelNxaTZHclVTaWpHak1mdHZmN2JzZzgxRXB2ZzFuTkgvNFh0ODlGK1paTHdnPT0%3D) — setengah pengangguran dan indikator pekerjaan layak.
 
 ## Food Price Database (FPDB)
 
