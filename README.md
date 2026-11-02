@@ -97,13 +97,15 @@ Semua angka dapat ditelusuri melalui URL sumber pada setiap baris. Kedua seri in
 
 ## LPG Household Price Dataset
 
-File publik: [`lpg_household_prices.csv`](lpg_household_prices.csv).
+File publik: [`lpg_household_prices.csv`](lpg_household_prices.csv) (referensi HET pangkalan dan harga agen) serta [`lpg_3kg_retail_prices.csv`](lpg_3kg_retail_prices.csv) (pantauan harga konsumen/pengecer LPG subsidi 3 kg).
 
-Dataset ini memisahkan:
-- **LPG 3 kg bersubsidi:** HET per kabupaten/kota dan harga pantauan di pasar. Kota Bandung, Kabupaten Bandung, dan Kota Cimahi memiliki dasar dan tahapan penyesuaian yang tidak identik. Harga pada e-Pasar Kota Cimahi tanggal 9–15 Oktober 2026 merupakan harga pantauan pasar (Rp25.000/tabung), bukan HET pangkalan atau bukti tunggal pelanggaran.
-- **Bright Gas 5,5 kg dan 12 kg:** snapshot harga nonsubsidi tingkat agen menurut zona dan tanggal sumber, termasuk table regional 15 Juli 2026 serta pembaruan harga Pulau Jawa pada 15 Agustus 2026. Harga agen bukan selalu harga akhir yang dibayar konsumen; biaya distribusi tambahan dapat berlaku.
+Dataset referensi `lpg_household_prices.csv` memisahkan:
+- **HET LPG 3 kg di tingkat pangkalan:** ketetapan daerah per kabupaten/kota. Kota Bandung, Kabupaten Bandung, dan Kota Cimahi memiliki dasar serta tanggal pelaksanaan berbeda.
+- **Bright Gas 5,5 kg dan 12 kg:** snapshot harga nonsubsidi tingkat agen menurut zona dan tanggal sumber, termasuk tabel regional 15 Juli 2026 serta pembaruan Pulau Jawa pada 15 Agustus 2026. Harga agen bukan selalu harga akhir yang dibayar konsumen.
 
-Setiap baris memuat tanggal observasi, produk/kapasitas, harga per tabung, lokasi, level administrasi, tahap harga, status implementasi, presisi tanggal, sumber, URL, dan catatan. Status `conditional_schedule_unverified` adalah ketentuan yang diumumkan dalam keputusan, tetapi belum dipastikan terlaksana; jangan perlakukan sebagai tarif aktual.
+Dataset terpisah `lpg_3kg_retail_prices.csv` berisi 11 catatan harga pasar/pengecer yang dapat ditelusuri, mencakup 8 dari 38 provinsi: Aceh, DKI Jakarta, DI Yogyakarta, Jawa Barat, Kalimantan Barat, Nusa Tenggara Barat, Sulawesi Tengah, dan Sulawesi Tenggara. Satu catatan lintas Jakarta Selatan–Tangerang Selatan tidak dipisahkan menurut provinsi dan karena itu tidak dihitung sebagai provinsi tambahan. Rentang dan angka mengikuti sumber; jenis observasi dibedakan antara pemantauan resmi, inspeksi lapangan, laporan media, dan keluhan masyarakat. Ini bukan survei harga provinsi yang seragam atau rata-rata provinsi.
+
+File retail memuat periode laporan/pengamatan, provinsi dan lokasi rinci, rentang harga per tabung, jenis observasi, sumber, URL, serta catatan metodologi. Nilai yang belum ditemukan dibiarkan kosong; tidak diisi dengan HET pangkalan.
 
 **Penting:** HET LPG 3 kg bukan angka nasional tunggal. Jangan menggunakan HET Kota Bandung untuk seluruh Jawa Barat/Indonesia. Snapshot harga nonsubsidi tidak membentuk panel bulanan nasional dan tidak diinterpolasi.
 
@@ -251,6 +253,7 @@ repository-root/
 ├── bbm_household_prices.csv.gz.b64
 ├── pln_household_tariffs.csv.gz.b64
 ├── lpg_household_prices.csv
+├── lpg_3kg_retail_prices.csv
 ├── household_welfare_indicators.csv
 ├── trim_fpdb.py
 ├── README.md
@@ -272,7 +275,8 @@ Kerangka dashboard menggunakan informasi dan/atau dataset publik dari sejumlah i
 - [Bank Indonesia](https://www.bi.go.id/) — PIHPS dan publikasi terkait pemantauan harga pangan.
 - [Badan Pangan Nasional](https://badanpangan.go.id/) — informasi dan pemantauan harga pangan.
 - [Kementerian ESDM](https://www.esdm.go.id/) — kebijakan energi, BBM, dan regulasi/komunikasi terkait listrik.
-- [JDIH Kota Bandung](https://jdih.bandung.go.id/home/produk-hukum/peraturan-perundang-undangan-daerah/24800), [Database Peraturan BPK](https://peraturan.bpk.go.id/Details/327304/perbup-kab-bandung-no-91-tahun-2025), dan [e-Pasar Kota Cimahi](https://e-pasar.cimahikota.go.id/komoditas/lpg-3kg1763348252) — HET LPG 3 kg dan harga pantauan pasar regional.
+- [JDIH Kota Bandung](https://jdih.bandung.go.id/home/produk-hukum/peraturan-perundang-undangan-daerah/24800) dan [Database Peraturan BPK](https://peraturan.bpk.go.id/Details/327304/perbup-kab-bandung-no-91-tahun-2025) — referensi HET LPG 3 kg di tingkat pangkalan.
+- [e-Pasar Kota Cimahi](https://e-pasar.cimahikota.go.id/komoditas/lpg-3kg1763348252), [ANTARA Aceh](https://aceh.antaranews.com/berita/413403/harga-lpg-3-kg-di-aceh-barat-tembus-rp45-ribu-tabung-begini-respons-pemkab), [Ombudsman RI DIY](https://ombudsman.go.id/perwakilan/news/r/pwkmedia--hasil-pengawasan-ombudsman-diy-elpiji-langka-harga-naik), [Pemkot Bima](https://portal.bimakota.go.id/web/detail-berita/3447/wali-kota-bima-larang-penjualan-lpg-3-kg-di-pengecer-pengawasan-distribusi-diperketat), [Pemkab Morowali](https://morowalikab.go.id/news/pemprov-sulteng-dan-pemkab-morowali-sidak-lpg-3-kg-dan-bbm-jelang-hari-besar-keagamaan), dan sumber lain yang dicantumkan per baris di `lpg_3kg_retail_prices.csv` — pantauan dan laporan harga konsumen/pengecer LPG 3 kg regional.
 - [Bisnis.com](https://ekonomi.bisnis.com/read/20260715/44/1988225/daftar-harga-lpg-bright-gas-pertamina-terbaru-15-juli-2026) dan [detikFinance](https://finance.detik.com/energi/d-8619653/harga-bright-gas-pertamina-turun) — harga agen LPG nonsubsidi regional.
 - [PLN](https://web.pln.co.id/) — statistik kelistrikan dan informasi tarif.
 
@@ -295,7 +299,8 @@ Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tida
 - Profil rumah tangga dan asumsi pertumbuhan default pada simulator mikro bersifat ilustratif dan dapat diubah pengguna; bukan rata-rata rumah tangga resmi.
 - Dataset BBM 2016–2026 terdiri dari 49 snapshot terpilih, bukan seri harian/bulanan lengkap; tanggal dan cakupan wilayah berbeda menurut sumber.
 - Dataset PLN 2016–2026 terdiri dari 71 catatan untuk tujuh golongan rumah tangga; jenis catatan dan ketersediaan snapshot tidak seragam antarperiode, dan data kosong tidak diinterpolasi.
-- Dataset LPG 3 kg merupakan contoh HET beberapa wilayah Bandung Raya ditambah harga pantauan pasar Kota Cimahi, bukan panel nasional. Harga Bright Gas nonsubsidi merupakan snapshot regional tingkat agen, bukan deret nasional bulanan lengkap.
+- Dataset harga pengecer LPG 3 kg saat ini mencakup 8/38 provinsi dan menggabungkan jenis sumber yang berbeda; angka bersifat observasi lokal/rentang laporan, bukan rata-rata provinsi atau survei nasional yang seragam. Penambahan wilayah memerlukan sumber harga konsumen yang eksplisit.
+- Dataset HET pangkalan LPG 3 kg dan harga agen Bright Gas tetap terpisah dari harga pengecer; ketiganya tidak boleh dibandingkan tanpa memperhatikan tahap distribusi.
 - Indikator daya beli dan ketenagakerjaan memiliki frekuensi yang berbeda (IPM tahunan, Sakernas Februari/Agustus, Susenas Maret/September); angka nominal upah tidak boleh disebut sebagai upah riil.
 - HET LPG dan harga eceran membutuhkan catatan spesifik wilayah serta waktu; satu nilai nasional tidak boleh diasumsikan.
 - Data Susenas membutuhkan harmonisasi dan interpretasi hati-hati antarputaran survei serta perubahan kuesioner/desain.
