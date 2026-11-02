@@ -103,9 +103,9 @@ a{color:var(--blue)}
     <div class="small">CSV harga pangan per pasar dan komoditas</div>
    </div>
    <div class="panel">
-    <div class="label">Household expenditure</div>
-    <div class="value">Susenas</div>
-    <div class="small">Pengeluaran dan kuantitas konsumsi</div>
+    <div class="label">Household welfare indicators</div>
+    <div class="value" id="welfareCoverage">Memuat...</div>
+    <div class="small">Sakernas, Susenas, IPM dan distribusi pengeluaran</div>
    </div>
   </div>
  </section>
@@ -210,30 +210,53 @@ a{color:var(--blue)}
 
  <section class="section">
   <div class="sectionhead">
-   <h2>04 — LPG & Regional Price Exposure</h2>
-   <span class="tag warn">REGIONAL DATA REQUIRED</span>
+   <h2>04 — LPG Household Price & HET Monitor</h2>
+   <span class="tag good">REGIONAL RECORDS / SOURCED</span>
   </div>
-  <div class="grid three">
-   <div class="panel">
-    <h3>LPG 3 kg</h3>
-    <div class="value">HET daerah</div>
-    <p class="small">Perlu data HET provinsi/kabupaten dan riwayat perubahannya.</p>
+  <div class="panel">
+   <div class="goodnote">
+    LPG subsidi 3 kg ditampilkan sebagai HET tingkat pangkalan yang ditetapkan
+    pemerintah daerah. LPG nonsubsidi 5,5 kg dan 12 kg ditampilkan sebagai
+    harga agen sesuai wilayah dan tanggal sumber. Keduanya bukan harga nasional
+    tunggal dan bukan selalu harga akhir di toko/rumah tangga.
    </div>
-   <div class="panel">
-    <h3>LPG nonsubsidi</h3>
-    <div class="value">Harga jual</div>
-    <p class="small">Harga tabung dan isi ulang dapat berubah menurut produk dan wilayah.</p>
+   <div class="controls" style="margin-top:15px">
+    <div class="control">
+     <label>Jenis LPG</label>
+     <select id="lpgProduct"></select>
+    </div>
+    <div class="control">
+     <label>Wilayah</label>
+     <select id="lpgRegion"></select>
+    </div>
+    <button id="lpgReload">Reload data LPG</button>
+    <button id="lpgDownload">Unduh CSV LPG</button>
    </div>
-   <div class="panel">
-    <h3>Harga aktual konsumen</h3>
-    <div class="value">Harga eceran</div>
-    <p class="small">Perlu dibedakan dari HET dan harga resmi di tingkat agen.</p>
+   <div class="status" id="lpgStatus">Memuat catatan HET dan harga LPG...</div>
+   <div class="grid two" style="margin-top:16px">
+    <div>
+     <h3>Harga/HET menurut tanggal catatan</h3>
+     <canvas id="lpgChart"></canvas>
+     <p class="small">
+      Rp/tabung. Snapshot ditampilkan sebagai titik tanpa garis penghubung.
+      Status keputusan dan status pelaksanaan tetap dibedakan.
+     </p>
+    </div>
+    <div>
+     <h3>Catatan harga dan sumber</h3>
+     <div style="overflow-x:auto">
+      <table>
+       <thead><tr><th>Tanggal</th><th>Jenis</th><th>Wilayah</th><th>Harga</th><th>Status</th><th>Sumber</th></tr></thead>
+       <tbody id="lpgTable"><tr><td colspan="6">Memuat...</td></tr></tbody>
+      </table>
+     </div>
+    </div>
    </div>
-  </div>
-  <div class="note" style="margin-top:12px">
-   Harga LPG 3 kg tidak boleh dianggap seragam nasional. Dashboard final
-   perlu menyimpan harga berdasarkan lokasi, tanggal, jenis transaksi,
-   dan status penyalur.
+   <p class="small" id="lpgInfo">
+    HET LPG 3 kg Kota Bandung merupakan contoh regional, bukan representasi
+    nasional. Catatan LPG nonsubsidi adalah snapshot harga tingkat agen;
+    distribusi di luar radius acuan dapat menambah biaya.
+   </p>
   </div>
  </section>
 
@@ -360,7 +383,76 @@ a{color:var(--blue)}
 
  <section class="section">
   <div class="sectionhead">
-   <h2>07 — Household Cost Simulator</h2>
+   <h2>07 — Household Purchasing Power & Labour Market</h2>
+   <span class="tag good">BPS / SUSENAS / SAKERNAS / IPM</span>
+  </div>
+  <div class="panel">
+   <div class="goodnote">
+    Bagian ini menggabungkan indikator daya beli, distribusi pengeluaran,
+    kemiskinan dan pasar kerja. Setiap indikator mempertahankan satuan,
+    definisi, dan frekuensi sumbernya. Data Maret/September Susenas tidak
+    dicampur menjadi data bulanan; data Agustus Sakernas dibedakan dari
+    observasi Februari.
+   </div>
+   <div class="controls" style="margin-top:15px">
+    <div class="control">
+     <label>Indikator</label>
+     <select id="welfareIndicator"></select>
+    </div>
+    <button id="welfareReload">Reload indikator</button>
+    <button id="welfareDownload">Unduh CSV indikator</button>
+   </div>
+   <div class="status" id="welfareStatus">Memuat indikator kesejahteraan...</div>
+   <div class="grid kpis" style="margin-top:15px">
+    <div class="panel">
+     <div class="label">Jumlah catatan</div>
+     <div class="value" id="welfareCount">—</div>
+    </div>
+    <div class="panel">
+     <div class="label">Observasi terbaru</div>
+     <div class="value" id="welfareLatest">—</div>
+    </div>
+    <div class="panel">
+     <div class="label">Tanggal data terbaru</div>
+     <div class="value" id="welfareDate">—</div>
+    </div>
+    <div class="panel">
+     <div class="label">Sumber utama</div>
+     <div class="value">BPS</div>
+    </div>
+   </div>
+   <div class="grid two" style="margin-top:18px">
+    <div>
+     <h3>Historical indicator series</h3>
+     <canvas id="welfareChart"></canvas>
+     <p class="small" id="welfareDefinition">
+      Pilih indikator untuk melihat definisi dan satuannya.
+     </p>
+    </div>
+    <div>
+     <h3>Observasi dan metodologi</h3>
+     <div style="overflow-x:auto">
+      <table>
+       <thead><tr><th>Periode</th><th>Nilai</th><th>Frekuensi</th><th>Sumber</th></tr></thead>
+       <tbody id="welfareTable"><tr><td colspan="4">Memuat...</td></tr></tbody>
+      </table>
+     </div>
+    </div>
+   </div>
+   <div class="note" style="margin-top:14px">
+    <b>Cara membaca:</b> Pengeluaran riil per kapita disesuaikan adalah proxy
+    standar hidup layak (konsumsi rata-rata per kapita setelah penyesuaian IHK
+    dan PPP), bukan gaji atau pendapatan disposabel. Upah buruh adalah nominal
+    dan tidak otomatis mencakup pekerja informal. TPT tidak menangkap seluruh
+    masalah kualitas pekerjaan; baca bersama informalitas dan setengah
+    pengangguran bila seri terbanding tersedia. Gini dan porsi 40% terbawah
+    mengukur distribusi pengeluaran, bukan distribusi pendapatan.
+   </div>
+  </div>
+ </section>
+ <section class="section">
+  <div class="sectionhead">
+   <h2>08 — Household Cost Simulator</h2>
    <span class="tag warn">SCENARIO ASSUMPTIONS</span>
   </div>
   <div class="panel">
@@ -411,7 +503,7 @@ a{color:var(--blue)}
 
  <section class="section">
   <div class="sectionhead">
-   <h2>08 — Source Register</h2>
+   <h2>09 — Source Register</h2>
    <span class="tag">TRACEABILITY</span>
   </div>
   <div class="panel">
@@ -431,7 +523,31 @@ a{color:var(--blue)}
       <td>Premium, Pertalite, Pertamax; snapshot terpilih dengan wilayah dan tanggal sumber</td></tr>
      
      <tr>
-      <td>Harga pangan</td>
+      <td>LPG subsidi 3 kg — HET regional</td>
+      <td><a href="https://jdih.bandung.go.id/home/produk-hukum/peraturan-perundang-undangan-daerah/24800" target="_blank">JDIH Kota Bandung</a> / <a href="https://www.antaranews.com/berita/4738785/wamen-bumn-tinjau-pangkalan-lpg-di-bandung-pastikan-harga-sesuai-het" target="_blank">ANTARA</a></td>
+      <td>HET pangkalan Kota Bandung; bukan HET nasional</td>
+     </tr>
+     <tr>
+      <td>LPG nonsubsidi 5,5 kg dan 12 kg</td>
+      <td><a href="https://databoks.katadata.co.id/energi/statistik/56e82f7beb3df44/harga-lpg-55-dan-12-kg-nonsubsidi-turun-pada-akhir-november-2023" target="_blank">Katadata</a> / <a href="https://www.detik.com/sumbagsel/berita/d-8452180/cek-daftar-lengkap-harga-lpg-non-subsidi-se-indonesia-per-18-april-2026" target="_blank">detikcom</a></td>
+      <td>Harga tingkat agen dan zona regional</td>
+     </tr>
+     <tr>
+      <td>Ketenagakerjaan, upah, dan TPT</td>
+      <td><a href="https://www.bps.go.id/id/pressrelease/2026/05/05/2574/tingkat-pengangguran-terbuka--tpt--sebesar-4-68-persen--rata-rata-upah-buruh-sebesar-3-29-juta-rupiah-.html" target="_blank">BPS Sakernas</a></td>
+      <td>TPT, TPAK, upah nominal, pekerja formal/informal</td>
+     </tr>
+     <tr>
+      <td>Kemiskinan dan ketimpangan</td>
+      <td><a href="https://www.bps.go.id/id/pressrelease/2026/08/05/2594/persentase-penduduk" target="_blank">BPS Susenas</a> / <a href="https://www.bps.go.id/id/pressrelease/2026/08/05/2595/gini-ratio-maret-2026-tercatat-sebesar-0-368-.html" target="_blank">Gini Ratio</a></td>
+      <td>Tingkat kemiskinan, Gini, porsi pengeluaran 40% terbawah</td>
+     </tr>
+     <tr>
+      <td>Daya beli — pengeluaran riil per kapita</td>
+      <td><a href="https://www.bps.go.id/publication/2026/04/24/f96755ab0e48765d028c0462/indeks-pembangunan-manusia-2025.html" target="_blank">BPS IPM</a> / <a href="https://sirusa.web.bps.go.id/metadata/indikator/2626b33f-9e08-9fc5-4f4a-2fc4c6f22230" target="_blank">Metadata BPS</a></td>
+      <td>Proxy standar hidup layak; IHK dan PPP disesuaikan</td>
+     </tr>
+     <tr><td>Harga pangan</td>
       <td><a href="https://microdata.worldbank.org/catalog/6166/data-api" target="_blank">World Bank RTFP</a></td>
       <td>Impor CSV untuk analisis harga</td>
      </tr>
@@ -456,7 +572,7 @@ a{color:var(--blue)}
  </section>
 
  <footer>
-  <b>INDONESIA HOUSEHOLD COST & BASIC NEEDS DASHBOARD — V4</b><br>
+  <b>INDONESIA HOUSEHOLD COST & BASIC NEEDS DASHBOARD — V5</b><br>
   Historical policy events, price data import, household exposure and scenario simulation.<br>
   Historical observations, policy announcements and scenario assumptions are
   intentionally separated. This is an independent analytical dashboard, not
@@ -1214,6 +1330,242 @@ if (document.readyState === 'loading') {
 }
 
 
+
+// ==========================================================
+// LPG PRICE AND HET DATASET
+// Data file: lpg_household_prices.csv
+// HET 3kg is local-government based; non-subs LPG is at agency level.
+// ==========================================================
+let lpgRows=[];
+let lpgCsvText='';
+let lpgChart=null;
+let welfareRows=[];
+let welfareCsvText='';
+let welfareChart=null;
+
+function lpgStatusLabel(status){
+ return ({
+  observed_reported:'Harga/HET dilaporkan',
+  reported_implemented:'Pelaksanaan dilaporkan',
+  legal_effective_date_later_implemented:'Jadwal keputusan; pelaksanaan bergeser',
+  conditional_schedule_unverified:'Jadwal kondisional; belum diverifikasi'
+ })[status]||status||'Catatan';
+}
+
+function renderLPGData(){
+ if(!lpgRows.length)return;
+ const product=document.getElementById('lpgProduct').value;
+ const region=document.getElementById('lpgRegion').value;
+ const records=lpgRows.filter(row=>
+  (product==='*'||row.product===product)&&
+  (region==='*'||row.region===region)
+ ).sort((a,b)=>a.observation_date.localeCompare(b.observation_date));
+ if(!records.length){
+  document.getElementById('lpgTable').innerHTML='<tr><td colspan="6">Tidak ada catatan untuk filter ini.</td></tr>';
+  if(lpgChart)lpgChart.destroy();lpgChart=null;
+  document.getElementById('lpgInfo').textContent='Tidak ada data untuk kombinasi filter yang dipilih.';
+  return;
+ }
+ const dates=[...new Set(records.map(row=>row.observation_date))].sort();
+ const regions=[...new Set(records.map(row=>row.region))];
+ const statuses=[...new Set(records.map(row=>row.record_status))];
+ const colors=['#58a6ff','#50d6d0','#ffb454','#ff7474','#5bd6a2','#b89cff'];
+ const datasets=[];
+ let colorIndex=0;
+ for(const status of statuses){
+  for(const area of regions){
+   const subset=records.filter(row=>row.record_status===status&&row.region===area);
+   if(!subset.length)continue;
+   const color=colors[colorIndex++%colors.length];
+   datasets.push({
+    label:area+' — '+lpgStatusLabel(status),
+    data:dates.map(date=>{
+     const row=subset.find(item=>item.observation_date===date);
+     return row?energyNumber(row.price_rp_per_cylinder):null;
+    }),
+    showLine:false,pointRadius:6,pointHoverRadius:8,
+    borderColor:color,backgroundColor:color
+   });
+  }
+ }
+ if(lpgChart)lpgChart.destroy();
+ lpgChart=new Chart(document.getElementById('lpgChart'),{
+  type:'line',data:{labels:dates,datasets},
+  options:{
+   responsive:true,interaction:{mode:'nearest',intersect:true},
+   plugins:{
+    legend:{labels:{color:'#cbd8e8'}},
+    tooltip:{callbacks:{
+     label:context=>context.dataset.label+': '+energyRp(context.raw)+'/tabung'
+    }}
+   },
+   scales:{
+    x:{ticks:{color:'#91a1b7',maxTicksLimit:12},grid:{color:'#293950'}},
+    y:{ticks:{color:'#91a1b7',callback:value=>energyRp(value)},grid:{color:'#293950'}}
+   }
+  }
+ });
+ document.getElementById('lpgTable').innerHTML=records.slice().reverse().map(row=>{
+  const stage=energyEscape(row.price_stage||'');
+  return '<tr><td>'+energyEscape(row.observation_date)+
+   (row.date_precision==='month'?' (bulan)':'')+'</td><td>'+
+   energyEscape(row.product)+'</td><td>'+energyEscape(row.region)+'</td><td>'+
+   energyRp(energyNumber(row.price_rp_per_cylinder))+'</td><td title="'+
+   energyEscape(row.source_note)+'">'+energyEscape(lpgStatusLabel(row.record_status))+
+   '</td><td>'+energySourceLink(row.source_name,row.source_url)+
+   '<div class="small">'+stage+'</div></td></tr>';
+ }).join('');
+ const count=records.length;
+ const planned=records.filter(row=>row.record_status==='conditional_schedule_unverified').length;
+ document.getElementById('lpgStatus').textContent=
+  'Database LPG aktif: '+lpgRows.length+' catatan; '+count+' sesuai filter.';
+ document.getElementById('lpgInfo').textContent=
+  count+' observasi ditampilkan. '+(planned?
+   planned+' catatan berstatus jadwal kondisional dan belum dipastikan terlaksana. ':'')+
+  'HET LPG subsidi 3 kg ditentukan daerah; data Bandung tidak mewakili kabupaten/kota lain. '+
+  'Harga Bright Gas nonsubsidi adalah harga di tingkat agen sesuai zona/radius yang disebut sumber, bukan selalu harga sampai rumah.';
+}
+
+async function loadLPGData(){
+ const status=document.getElementById('lpgStatus');
+ status.textContent='Mengambil lpg_household_prices.csv...';
+ try{
+  const response=await fetch('./lpg_household_prices.csv',{cache:'no-store'});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  lpgCsvText=await response.text();
+  lpgRows=energyParseCSV(lpgCsvText);
+  if(!lpgRows.length)throw new Error('CSV tidak berisi catatan.');
+  energySetOptions('lpgProduct',lpgRows.map(row=>row.product),'Semua produk','Bright Gas 5,5 kg');
+  energySetOptions('lpgRegion',lpgRows
+   .filter(row=>document.getElementById('lpgProduct').value==='*'||
+                row.product===document.getElementById('lpgProduct').value)
+   .map(row=>row.region),'Semua wilayah');
+  renderLPGData();
+ }catch(error){
+  status.textContent='Gagal memuat database LPG: '+error.message;
+ }
+}
+
+document.getElementById('lpgProduct').addEventListener('change',()=>{
+ energySetOptions('lpgRegion',lpgRows
+  .filter(row=>document.getElementById('lpgProduct').value==='*'||
+               row.product===document.getElementById('lpgProduct').value)
+  .map(row=>row.region),'Semua wilayah');
+ renderLPGData();
+});
+document.getElementById('lpgRegion').addEventListener('change',renderLPGData);
+document.getElementById('lpgReload').addEventListener('click',loadLPGData);
+document.getElementById('lpgDownload').addEventListener('click',()=>energyDownloadCSV(lpgCsvText,'lpg_household_prices.csv'));
+
+// ==========================================================
+// HOUSEHOLD WELFARE AND LABOUR MARKET INDICATORS
+// Data file: household_welfare_indicators.csv
+// Frequencies are intentionally preserved; nominal wages are not deflated.
+// ==========================================================
+const welfareHelp={
+ adjusted_real_per_capita_expenditure:'Proxy standar hidup layak: rata-rata konsumsi tahunan per kapita yang disesuaikan dengan IHK dan PPP. Bukan gaji atau pendapatan disposabel.',
+ average_monthly_wage:'Rata-rata upah buruh/karyawan/pegawai secara nominal. Tidak mewakili semua pekerja informal dan belum dideflasi dengan IHK.',
+ open_unemployment_rate:'TPT: jumlah penganggur sebagai persentase angkatan kerja. Seri titik Agustus tahunan; Februari 2026 adalah periode survei berbeda.',
+ labor_force_participation_rate:'TPAK: proporsi penduduk usia kerja yang termasuk angkatan kerja.',
+ informal_employment_share:'Proporsi pekerja pada kegiatan informal menurut klasifikasi BPS.',
+ poverty_rate:'Persentase penduduk dengan pengeluaran per kapita di bawah garis kemiskinan; titik Susenas Maret/September.',
+ gini_ratio:'Gini ratio distribusi pengeluaran; nilai lebih tinggi menunjukkan ketimpangan pengeluaran lebih besar.',
+ bottom40_expenditure_share:'Porsi total pengeluaran yang dinikmati 40 persen penduduk terbawah menurut kriteria Bank Dunia.'
+};
+
+function welfareFormat(row){
+ const value=energyNumber(row.value);
+ if(row.unit.startsWith('Rp/'))return energyRp(value);
+ if(row.unit==='%')return value.toFixed(2)+'%';
+ if(row.unit.startsWith('indeks'))return value.toFixed(3);
+ return new Intl.NumberFormat('id-ID',{maximumFractionDigits:2}).format(value)+' '+row.unit;
+}
+
+function renderWelfareData(){
+ if(!welfareRows.length)return;
+ const selected=document.getElementById('welfareIndicator').value;
+ const records=welfareRows.filter(row=>row.indicator===selected)
+  .sort((a,b)=>a.observation_date.localeCompare(b.observation_date));
+ if(!records.length)return;
+ const label=records[0].indicator_label;
+ if(welfareChart)welfareChart.destroy();
+ welfareChart=new Chart(document.getElementById('welfareChart'),{
+  type:'line',
+  data:{
+   labels:records.map(row=>row.observation_date),
+   datasets:[{
+    label:label,
+    data:records.map(row=>energyNumber(row.value)),
+    borderColor:'#50d6d0',backgroundColor:'#50d6d0',
+    pointRadius:4,pointHoverRadius:7,tension:0,spanGaps:false
+   }]
+  },
+  options:{
+   responsive:true,interaction:{mode:'nearest',intersect:true},
+   plugins:{
+    legend:{labels:{color:'#cbd8e8'}},
+    tooltip:{callbacks:{label:context=>welfareFormat(records[context.dataIndex])}}
+   },
+   scales:{
+    x:{ticks:{color:'#91a1b7',maxTicksLimit:12},grid:{color:'#293950'}},
+    y:{ticks:{color:'#91a1b7'},grid:{color:'#293950'}}
+   }
+  }
+ });
+ const latest=records[records.length-1];
+ document.getElementById('welfareCount').textContent=records.length+' titik';
+ document.getElementById('welfareLatest').textContent=welfareFormat(latest);
+ document.getElementById('welfareDate').textContent=latest.observation_date;
+ document.getElementById('welfareDefinition').textContent=
+  (welfareHelp[selected]||'')+' Unit: '+latest.unit+'. Cakupan: '+latest.reference_population+
+  '. Frekuensi: '+latest.frequency+'.';
+ document.getElementById('welfareTable').innerHTML=records.slice().reverse().map(row=>
+  '<tr><td>'+energyEscape(row.observation_date)+'</td><td>'+
+  energyEscape(welfareFormat(row))+'</td><td>'+energyEscape(row.frequency)+
+  '</td><td>'+energySourceLink(row.source_name,row.source_url)+
+  '<div class="small" title="'+energyEscape(row.source_note)+'">'+
+  energyEscape(row.source_note.slice(0,145))+(row.source_note.length>145?'…':'')+
+  '</div></td></tr>'
+ ).join('');
+ document.getElementById('welfareStatus').textContent=
+  'Indikator BPS aktif: '+new Set(welfareRows.map(row=>row.indicator)).size+
+  ' kelompok indikator; '+records.length+' observasi untuk pilihan saat ini.';
+}
+
+async function loadWelfareData(){
+ const status=document.getElementById('welfareStatus');
+ status.textContent='Mengambil household_welfare_indicators.csv...';
+ try{
+  const response=await fetch('./household_welfare_indicators.csv',{cache:'no-store'});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  welfareCsvText=await response.text();
+  welfareRows=energyParseCSV(welfareCsvText);
+  if(!welfareRows.length)throw new Error('CSV tidak berisi catatan.');
+  const unique=[...new Map(welfareRows.map(row=>[row.indicator,row])).values()];
+  const select=document.getElementById('welfareIndicator');
+  select.innerHTML='';
+  unique.sort((a,b)=>a.indicator_label.localeCompare(b.indicator_label,'id'))
+   .forEach(row=>{
+    const opt=document.createElement('option');
+    opt.value=row.indicator;
+    opt.textContent=row.indicator_label;
+    select.appendChild(opt);
+   });
+  if([...select.options].some(option=>option.value==='adjusted_real_per_capita_expenditure'))
+   select.value='adjusted_real_per_capita_expenditure';
+  document.getElementById('welfareCoverage').textContent=
+   new Set(welfareRows.map(row=>row.indicator)).size+' indikator';
+  renderWelfareData();
+ }catch(error){
+  status.textContent='Gagal memuat indikator kesejahteraan: '+error.message;
+  document.getElementById('welfareCoverage').textContent='Gagal dimuat';
+ }
+}
+document.getElementById('welfareIndicator').addEventListener('change',renderWelfareData);
+document.getElementById('welfareReload').addEventListener('click',loadWelfareData);
+document.getElementById('welfareDownload').addEventListener('click',()=>energyDownloadCSV(welfareCsvText,'household_welfare_indicators.csv'));
+
+
 // Household simulator.
 let householdChart;
 function simulate(){
@@ -1267,6 +1619,8 @@ document.getElementById('resetSim').addEventListener('click',()=>{
 document.getElementById('updated').textContent=
  'Generated: '+new Date().toLocaleString('id-ID');
 loadHouseholdEnergyData();
+loadLPGData();
+loadWelfareData();
 simulate();
 </script>
 </body>
