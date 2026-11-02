@@ -287,6 +287,8 @@ Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tida
 - **Buat skenario yang dapat direproduksi.** Catat asumsi, periode acuan, versi sumber, dan metode perhitungan.
 - **Periksa keterbandingan antarwaktu.** Desain survei, bobot CPI, definisi komoditas, tarif, HET daerah, dan batas administrasi dapat berubah.
 
+- Setengah pengangguran mengukur kekurangan pemanfaatan tenaga kerja di antara orang yang sudah bekerja; indikator ini berbeda dari TPT dan perlu dibaca bersama TPAK, pekerja informal, serta upah.
+
 ## Keterbatasan
 
 - Lintasan stress test makro adalah skenario kondisional, bukan forecast probabilistik.
