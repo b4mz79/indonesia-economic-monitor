@@ -143,8 +143,8 @@ a{color:var(--blue)}
      <h3>Catatan tarif dan sumber</h3>
      <div style="overflow-x:auto">
       <table>
-       <thead><tr><th>Periode</th><th>Tarif</th><th>Jenis data</th><th>Sumber</th></tr></thead>
-       <tbody id="electricTable"><tr><td colspan="4">Memuat...</td></tr></tbody>
+       <thead><tr><th>Golongan</th><th>Periode</th><th>Tarif</th><th>Jenis data</th><th>Sumber</th></tr></thead>
+       <tbody id="electricTable"><tr><td colspan="5">Memuat...</td></tr></tbody>
       </table>
      </div>
     </div>
@@ -618,29 +618,32 @@ function renderElectricityData() {
     .sort((a,b)=>a.valid_from.localeCompare(b.valid_from));
   if(!records.length)return;
 
+  const dates=[...new Set(records.map(row=>row.valid_from))].sort();
+  const classes=[...new Set(records.map(row=>row.household_class))];
+  const datasets=classes.map((className,index)=>({
+    label:className,
+    data:dates.map(date=>{
+      const row=records.find(item=>item.household_class===className&&item.valid_from===date);
+      return row?energyNumber(row.rate_rp_per_kwh):null;
+    }),
+    showLine:false,pointRadius:5,pointHoverRadius:7,
+    borderColor:energyPalette[index%energyPalette.length],
+    backgroundColor:energyPalette[index%energyPalette.length]
+  }));
+
   if(electricChart)electricChart.destroy();
   electricChart=new Chart(document.getElementById('electricChart'),{
     type:'line',
-    data:{
-      labels:records.map(row=>row.valid_from),
-      datasets:[{
-        label:'Tarif nominal PLN',
-        data:records.map(row=>energyNumber(row.rate_rp_per_kwh)),
-        showLine:false,pointRadius:5,pointHoverRadius:7,
-        borderColor:'#58a6ff',backgroundColor:'#58a6ff'
-      }]
-    },
+    data:{labels:dates,datasets},
     options:{
       responsive:true,interaction:{mode:'nearest',intersect:true},
       plugins:{
         legend:{labels:{color:'#cbd8e8'}},
         tooltip:{
           callbacks:{
-            title:items=>{
-              const row=records[items[0].dataIndex];
-              return row.valid_from+(row.valid_to?' s.d. '+row.valid_to:'');
-            },
-            label:context=>energyRp(context.raw,String(context.raw).includes('.')?2:0)+'/kWh'
+            title:items=>dates[items[0].dataIndex],
+            label:context=>context.dataset.label+': '+
+              energyRp(context.raw,String(context.raw).includes('.')?2:0)+'/kWh'
           }
         }
       },
@@ -654,8 +657,10 @@ function renderElectricityData() {
   document.getElementById('electricTable').innerHTML=records.slice().reverse().map(row=>{
     const period=row.valid_from+(row.valid_to?' – '+row.valid_to:' – terbaru');
     const precision=row.date_precision==='month'?' (presisi bulan)':'';
-    const tariff=energyRp(energyNumber(row.rate_rp_per_kwh),String(row.rate_rp_per_kwh).includes('.')?2:0);
-    return '<tr><td>'+energyEscape(period+precision)+'</td><td>'+tariff+'</td><td>'+
+    const tariff=energyRp(energyNumber(row.rate_rp_per_kwh),
+      String(row.rate_rp_per_kwh).includes('.')?2:0);
+    return '<tr><td>'+energyEscape(row.household_class)+'</td><td>'+
+      energyEscape(period+precision)+'</td><td>'+tariff+'</td><td>'+
       energyEscape(energyRecordTypeLabel(row.record_type))+'</td><td>'+
       energySourceLink(row.source_name,row.source_url)+'</td></tr>';
   }).join('');
@@ -663,12 +668,14 @@ function renderElectricityData() {
   const latest=records[records.length-1];
   document.getElementById('electricCoverage').textContent=plnRows.length+' catatan';
   document.getElementById('electricInfo').textContent=
-    records.length+' catatan untuk '+selectedClass+'. Catatan terbaru: '+latest.valid_from+
-    ', '+energyRp(energyNumber(latest.rate_rp_per_kwh),String(latest.rate_rp_per_kwh).includes('.')?2:0)+
+    (selectedClass==='*'?'Menampilkan '+classes.length+' golongan sebagai seri terpisah. ':
+      records.length+' catatan untuk '+selectedClass+'. ')+
+    'Catatan terbaru dalam pilihan: '+latest.valid_from+', '+
+    energyRp(energyNumber(latest.rate_rp_per_kwh),
+      String(latest.rate_rp_per_kwh).includes('.')?2:0)+
     '/kWh. Snapshot yang tidak tersedia tidak diinterpolasi. Untuk 450 VA dan 900 VA subsidi, '+
     'nilai tunggal dalam dataset adalah referensi prabayar; pascabayar memakai blok pemakaian.';
 }
-
 function renderFuelData() {
   if(!bbmRows.length)return;
   const selectedProduct=document.getElementById('fuelProduct').value;
