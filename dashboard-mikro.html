@@ -1449,7 +1449,7 @@ async function loadLPGData(){
   lpgCsvText=await response.text();
   lpgRows=energyParseCSV(lpgCsvText);
   if(!lpgRows.length)throw new Error('CSV tidak berisi catatan.');
-  energySetOptions('lpgProduct',lpgRows.map(row=>row.product),'Semua produk','Bright Gas 5,5 kg');
+  energySetOptions('lpgProduct',lpgRows.map(row=>row.product),'Semua produk','LPG subsidi 3 kg');
   energySetOptions('lpgRegion',lpgRows
    .filter(row=>document.getElementById('lpgProduct').value==='*'||
                 row.product===document.getElementById('lpgProduct').value)
