@@ -210,40 +210,96 @@ a{color:var(--blue)}
 
  <section class="section">
   <div class="sectionhead">
-   <h2>04 — LPG Household Price & HET Monitor</h2>
-   <span class="tag good">REGIONAL RECORDS / SOURCED</span>
+   <h2>04 — LPG 3 kg: Harga Pasar, Pengecer & HET</h2>
+   <span class="tag good">HARGA KONSUMEN / REGIONAL</span>
   </div>
+
   <div class="panel">
    <div class="goodnote">
-    LPG subsidi 3 kg ditampilkan sebagai HET tingkat pangkalan yang ditetapkan
-    pemerintah daerah. LPG nonsubsidi 5,5 kg dan 12 kg ditampilkan sebagai
-    harga agen sesuai wilayah dan tanggal sumber. Keduanya bukan harga nasional
-    tunggal dan bukan selalu harga akhir di toko/rumah tangga.
+    <b>Tampilan utama:</b> harga LPG subsidi 3 kg yang dilaporkan atau dipantau
+    pada tingkat pengecer/pasar — harga yang lebih dekat dengan pengeluaran
+    aktual masyarakat. Angka merupakan observasi lokal dan rentang laporan,
+    bukan HET resmi, bukan rata-rata provinsi, dan bukan seri waktu nasional.
    </div>
    <div class="controls" style="margin-top:15px">
     <div class="control">
-     <label>Jenis LPG</label>
+     <label>Provinsi</label>
+     <select id="lpgRetailProvince"></select>
+    </div>
+    <button id="lpgRetailReload">Reload pantauan pasar</button>
+    <button id="lpgRetailDownload">Unduh CSV harga pengecer</button>
+   </div>
+   <div class="status" id="lpgRetailStatus">Memuat pantauan harga LPG 3 kg...</div>
+   <div class="grid kpis" style="margin-top:15px">
+    <div class="panel">
+     <div class="label">Cakupan provinsi</div>
+     <div class="value" id="lpgRetailCoverage">—</div>
+    </div>
+    <div class="panel">
+     <div class="label">Catatan harga ditampilkan</div>
+     <div class="value" id="lpgRetailCount">—</div>
+    </div>
+    <div class="panel">
+     <div class="label">Observasi/laporan terbaru</div>
+     <div class="value" id="lpgRetailLatest">—</div>
+    </div>
+   </div>
+   <h3 style="margin-top:18px">Harga LPG 3 kg pada tingkat pengecer / pasar</h3>
+   <div style="overflow-x:auto">
+    <table>
+     <thead>
+      <tr>
+       <th>Provinsi</th><th>Lokasi pantauan</th><th>Periode sumber</th>
+       <th>Rentang harga</th><th>Jenis observasi</th><th>Sumber dan catatan</th>
+      </tr>
+     </thead>
+     <tbody id="lpgRetailTable"><tr><td colspan="6">Memuat...</td></tr></tbody>
+    </table>
+   </div>
+   <p class="small" id="lpgRetailInfo">
+    Jika sebuah provinsi belum memiliki catatan, artinya belum ditemukan
+    observasi harga pengecer yang cukup dapat ditelusuri — bukan berarti harga
+    nol atau LPG tidak tersedia.
+   </p>
+   <div class="note" style="margin-top:14px">
+    <b>Pembacaan data:</b> hasil pantauan pemerintah, inspeksi, laporan
+    Ombudsman, dan keluhan masyarakat diberi jenis observasi masing-masing.
+    Rentang harga tidak diubah menjadi satu angka rata-rata. Perbedaan tanggal,
+    kota/kabupaten, dan metode pengamatan harus diperhatikan saat membandingkan.
+    Cakupan provinsi akan bertambah hanya ketika ada sumber yang bisa diverifikasi.
+   </div>
+  </div>
+
+  <div class="panel" style="margin-top:15px">
+   <div class="goodnote">
+    <b>Referensi kebijakan dan LPG lain:</b> panel ini memisahkan HET resmi
+    di tingkat pangkalan untuk LPG subsidi 3 kg dari harga agen LPG nonsubsidi
+    5,5 kg dan 12 kg. Harga HET pangkalan bukan harga pengecer.
+   </div>
+   <div class="controls" style="margin-top:15px">
+    <div class="control">
+     <label>Jenis / referensi LPG</label>
      <select id="lpgProduct"></select>
     </div>
     <div class="control">
      <label>Wilayah</label>
      <select id="lpgRegion"></select>
     </div>
-    <button id="lpgReload">Reload data LPG</button>
-    <button id="lpgDownload">Unduh CSV LPG</button>
+    <button id="lpgReload">Reload referensi LPG</button>
+    <button id="lpgDownload">Unduh CSV referensi LPG</button>
    </div>
-   <div class="status" id="lpgStatus">Memuat catatan HET dan harga LPG...</div>
+   <div class="status" id="lpgStatus">Memuat HET pangkalan dan harga LPG...</div>
    <div class="grid two" style="margin-top:16px">
     <div>
-     <h3>Harga/HET menurut tanggal catatan</h3>
+     <h3>HET / harga agen menurut tanggal catatan</h3>
      <canvas id="lpgChart"></canvas>
      <p class="small">
       Rp/tabung. Snapshot ditampilkan sebagai titik tanpa garis penghubung.
-      Status keputusan dan status pelaksanaan tetap dibedakan.
+      Status keputusan, pelaksanaan, dan harga agen dibedakan.
      </p>
     </div>
     <div>
-     <h3>Catatan harga dan sumber</h3>
+     <h3>Catatan regulasi dan harga agen</h3>
      <div style="overflow-x:auto">
       <table>
        <thead><tr><th>Tanggal</th><th>Jenis</th><th>Wilayah</th><th>Harga</th><th>Status</th><th>Sumber</th></tr></thead>
@@ -254,9 +310,8 @@ a{color:var(--blue)}
    </div>
    <p class="small" id="lpgInfo">
     HET LPG 3 kg ditetapkan per kabupaten/kota dan dapat berbeda bahkan di
-    dalam satu aglomerasi. Catatan e-Pasar adalah harga pantauan pasar, bukan
-    HET pangkalan. Catatan LPG nonsubsidi adalah snapshot harga tingkat agen;
-    distribusi di luar radius acuan dapat menambah biaya.
+    dalam satu aglomerasi. Harga agen Bright Gas nonsubsidi juga berbeda
+    menurut zona/radius distribusi dan bukan selalu harga sampai rumah.
    </p>
   </div>
  </section>
@@ -1351,6 +1406,109 @@ if (document.readyState === 'loading') {
 let lpgRows=[];
 let lpgCsvText='';
 let lpgChart=null;
+let lpgRetailRows=[];
+let lpgRetailCsvText='';
+
+const lpgProvinceList=[
+ 'Aceh','Sumatera Utara','Sumatera Barat','Riau','Kepulauan Riau','Jambi',
+ 'Sumatera Selatan','Kepulauan Bangka Belitung','Bengkulu','Lampung',
+ 'DKI Jakarta','Jawa Barat','Jawa Tengah','DI Yogyakarta','Jawa Timur','Banten',
+ 'Bali','Nusa Tenggara Barat','Nusa Tenggara Timur',
+ 'Kalimantan Barat','Kalimantan Tengah','Kalimantan Selatan','Kalimantan Timur','Kalimantan Utara',
+ 'Sulawesi Utara','Gorontalo','Sulawesi Tengah','Sulawesi Barat','Sulawesi Selatan','Sulawesi Tenggara',
+ 'Maluku','Maluku Utara','Papua Barat','Papua Barat Daya','Papua Tengah','Papua Pegunungan','Papua Selatan','Papua'
+];
+
+function lpgRetailFormatDate(value){
+ if(!value)return '—';
+ const date=new Date(value+'T12:00:00');
+ if(Number.isNaN(date.getTime()))return value;
+ return date.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'});
+}
+
+function lpgRetailFormatPeriod(row){
+ const start=lpgRetailFormatDate(row.period_start);
+ const end=lpgRetailFormatDate(row.period_end);
+ return start===end?start:start+' – '+end;
+}
+
+function renderLpgRetailData(){
+ const selected=document.getElementById('lpgRetailProvince').value;
+ const rows=lpgRetailRows
+  .filter(row=>selected==='*'||row.province===selected)
+  .sort((a,b)=>b.period_end.localeCompare(a.period_end)||a.province.localeCompare(b.province,'id'));
+
+ const covered=new Set(lpgRetailRows
+  .map(row=>row.province)
+  .filter(province=>lpgProvinceList.includes(province)));
+ document.getElementById('lpgRetailCoverage').textContent=covered.size+'/38';
+ document.getElementById('lpgRetailCount').textContent=rows.length.toLocaleString('id-ID');
+
+ const latest=rows.reduce((value,row)=>row.period_end>value?row.period_end:value,'');
+ document.getElementById('lpgRetailLatest').textContent=latest?lpgRetailFormatDate(latest):'—';
+
+ if(!rows.length){
+  document.getElementById('lpgRetailTable').innerHTML=
+   '<tr><td colspan="6">Belum ada catatan harga pengecer LPG 3 kg yang dapat diverifikasi untuk provinsi ini.</td></tr>';
+  document.getElementById('lpgRetailStatus').textContent=
+   'Belum ada observasi terbuka yang dapat ditelusuri untuk provinsi yang dipilih.';
+  document.getElementById('lpgRetailInfo').textContent=
+   'Status kosong berarti belum ditemukan publikasi harga pengecer yang dapat diverifikasi. Ini bukan berarti harga nol, tidak ada LPG, atau harga sama dengan HET pangkalan.';
+  return;
+ }
+
+ document.getElementById('lpgRetailTable').innerHTML=rows.map(row=>{
+  const low=energyNumber(row.price_min_rp_per_cylinder);
+  const high=energyNumber(row.price_max_rp_per_cylinder);
+  const price=low===high?energyRp(low)+'/tabung':energyRp(low)+' – '+energyRp(high)+'/tabung';
+  return '<tr><td>'+energyEscape(row.province)+'</td><td>'+
+   energyEscape(row.location)+'</td><td>'+energyEscape(lpgRetailFormatPeriod(row))+
+   '</td><td><b>'+energyEscape(price)+'</b></td><td>'+
+   energyEscape(row.observation_type)+'</td><td>'+
+   energySourceLink(row.source_name,row.source_url)+
+   '<div class="small">'+energyEscape(row.source_note)+'</div></td></tr>';
+ }).join('');
+
+ const selectedName=selected==='*'?'seluruh provinsi':'Provinsi '+selected;
+ document.getElementById('lpgRetailStatus').textContent=
+  rows.length+' catatan harga/laporan ditampilkan untuk '+selectedName+
+  '. Cakupan: '+covered.size+' dari 38 provinsi.';
+ document.getElementById('lpgRetailInfo').textContent=
+  'Rentang harga merupakan angka yang tercantum dalam sumber, bukan rata-rata provinsi. Lokasi rinci, tanggal laporan, dan jenis observasi harus dibaca bersama. Satu sumber dapat melaporkan keluhan warga, sementara sumber lain melakukan inspeksi langsung.';
+}
+
+async function loadLpgRetailData(){
+ const status=document.getElementById('lpgRetailStatus');
+ status.textContent='Mengambil lpg_3kg_retail_prices.csv...';
+ try{
+  const response=await fetch('./lpg_3kg_retail_prices.csv',{cache:'no-store'});
+  if(!response.ok)throw new Error('HTTP '+response.status);
+  lpgRetailCsvText=await response.text();
+  lpgRetailRows=energyParseCSV(lpgRetailCsvText);
+  if(!lpgRetailRows.length)throw new Error('CSV belum berisi catatan.');
+  const select=document.getElementById('lpgRetailProvince');
+  const oldValue=select.value;
+  select.innerHTML='<option value="*">Semua provinsi (cakupan tersedia)</option>'+
+   lpgProvinceList.map(province=>'<option value="'+energyEscape(province)+'">'+
+    energyEscape(province)+'</option>').join('')+
+   '<option value="Lintas DKI Jakarta–Banten">Lintas DKI Jakarta–Banten (nilai tidak dipisah)</option>';
+  if([...select.options].some(option=>option.value===oldValue))select.value=oldValue;
+  else select.value='*';
+  renderLpgRetailData();
+ }catch(error){
+  status.textContent='Gagal memuat pantauan LPG 3 kg: '+error.message;
+  document.getElementById('lpgRetailCoverage').textContent='—';
+  document.getElementById('lpgRetailCount').textContent='—';
+  document.getElementById('lpgRetailLatest').textContent='—';
+ }
+}
+
+document.getElementById('lpgRetailProvince').addEventListener('change',renderLpgRetailData);
+document.getElementById('lpgRetailReload').addEventListener('click',loadLpgRetailData);
+document.getElementById('lpgRetailDownload').addEventListener('click',()=>{
+ if(lpgRetailCsvText)energyDownloadCSV(lpgRetailCsvText,'lpg_3kg_retail_prices.csv');
+});
+
 let welfareRows=[];
 let welfareCsvText='';
 let welfareChart=null;
@@ -1639,6 +1797,7 @@ document.getElementById('resetSim').addEventListener('click',()=>{
 document.getElementById('updated').textContent=
  'Generated: '+new Date().toLocaleString('id-ID');
 loadHouseholdEnergyData();
+loadLpgRetailData();
 loadLPGData();
 loadWelfareData();
 simulate();
