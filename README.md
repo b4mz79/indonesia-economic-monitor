@@ -5,7 +5,7 @@
 
 Proyek dashboard publik dan independen untuk mengeksplorasi bagaimana risiko geopolitik dan ekonomi eksternal dapat merambat ke perekonomian Indonesia, harga kebutuhan dasar, biaya hidup, serta daya beli rumah tangga.
 
-> **Penting:** Proyek ini merupakan alat analisis dan edukasi independen, bukan publikasi resmi Pemerintah Indonesia, Bank Indonesia, BPS, PLN, World Bank, atau lembaga penyedia data lainnya. Data historis, peristiwa kebijakan, interpretasi analitis, dan asumsi skenario dipisahkan secara eksplisit. Nilai skenario bukan forecast resmi.
+> **Disclaimer:** Proyek ini merupakan alat analisis, edukasi, dan pemantauan independen. Ini bukan publikasi resmi, nasihat investasi/keuangan, nasihat hukum, rekomendasi kebijakan, atau pengganti data dan pengumuman resmi. Nilai skenario merupakan asumsi kondisional, bukan prediksi. Data dapat tidak lengkap, berbeda cakupan/periode, terlambat, atau direvisi. Penggunaan ulang kode dan data tunduk pada ketentuan yang berbeda: **MIT hanya berlaku untuk kode asli proyek; dataset dan materi pihak ketiga tidak otomatis dilisensikan dengan MIT.** Baca bagian [Disclaimer](#disclaimer) dan [Lisensi dan penggunaan ulang](#lisensi-dan-penggunaan-ulang) sebelum mengutip atau menggunakan kembali materi.
 
 ## Website publik
 
@@ -257,6 +257,7 @@ repository-root/
 ├── household_welfare_indicators.csv
 ├── trim_fpdb.py
 ├── README.md
+├── LICENSE
 └── .gitignore
 ```
 
@@ -280,7 +281,43 @@ Kerangka dashboard menggunakan informasi dan/atau dataset publik dari sejumlah i
 - [Bisnis.com](https://ekonomi.bisnis.com/read/20260715/44/1988225/daftar-harga-lpg-bright-gas-pertamina-terbaru-15-juli-2026) dan [detikFinance](https://finance.detik.com/energi/d-8619653/harga-bright-gas-pertamina-turun) — harga agen LPG nonsubsidi regional.
 - [PLN](https://web.pln.co.id/) — statistik kelistrikan dan informasi tarif.
 
-Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tidak memperbolehkan pengguna menyiratkan bahwa World Bank mendukung produk atau analisis turunan. Periksa ketentuan katalog yang berlaku dan batasan pada materi sumber sebelum mendistribusikan ulang data. Proyek ini tidak didukung atau disahkan oleh institusi yang disebutkan di atas.
+### Atribusi khusus World Bank RTFP
+
+Katalog World Bank menyatakan bahwa estimasi pada dataset Indonesia tersebut bersumber dari data yang tersedia untuk publik dan dataset harga diterbitkan sebagai open data. Tetap ikuti [World Bank Microdata Library Terms of Use](https://microdata.worldbank.org/terms-of-use), termasuk kewajiban atribusi, larangan menyiratkan endorsement, larangan menggunakan logo/merek tanpa izin, serta pembatasan khusus yang mungkin melekat pada materi tertentu. Status open data RTFP tidak mengubah lisensi sumber lain di repository ini.
+
+Sitasi dataset yang digunakan pada versi katalog **2026-10-05**:
+
+> Andrée, B. P. J. (2021). *Monthly food price estimates by product and market* (Version 2026-10-05). IDN_2021_RTFP_v02_M. Washington, DC: World Bank Microdata Library. [https://doi.org/10.48529/2ZH0-JF55](https://doi.org/10.48529/2ZH0-JF55).
+
+Sebelum mengambil atau mendistribusikan ulang versi RTFP yang lebih baru, periksa kembali metadata, status akses, sitasi, dan syarat penggunaan yang menyertai versi tersebut. Proyek ini tidak didukung, disponsori, atau disahkan oleh World Bank maupun institusi lain yang tercantum sebagai sumber.
+
+## Disclaimer
+
+### Tujuan dan bukan nasihat profesional
+
+Dashboard ini disediakan hanya untuk tujuan informasi, edukasi, eksplorasi data, dan analisis independen. Kontennya bukan nasihat investasi, keuangan, perpajakan, hukum, pengadaan energi, ataupun rekomendasi kebijakan. Dashboard tidak dirancang sebagai satu-satunya dasar untuk keputusan bisnis, investasi, pembelian, kebijakan publik, atau keputusan rumah tangga. Pengguna harus melakukan verifikasi mandiri dan berkonsultasi dengan tenaga profesional atau otoritas yang berwenang bila diperlukan.
+
+### Batas akurasi, kelengkapan, dan waktu
+
+Data dihimpun dari sumber yang berbeda dan dapat memiliki periode, frekuensi, satuan, definisi, kualitas, metode pengumpulan, dan cakupan geografis yang tidak seragam. Sebagian angka merupakan observasi langsung atau laporan lapangan; sebagian lainnya merupakan estimasi, data hasil olahan, atau kutipan dari publikasi. Sumber dapat memperbarui atau merevisi data setelah dashboard diterbitkan. Tidak ada jaminan bahwa seluruh nilai selalu terbaru, akurat, lengkap, bebas kesalahan, atau tersedia tanpa gangguan. Tanggal dan URL sumber per data harus menjadi rujukan utama ketika memverifikasi suatu angka.
+
+### Skenario, proyeksi, dan simulator
+
+Lintasan stress test makro 2027–2030 dan simulator biaya rumah tangga menggunakan asumsi yang dipilih untuk menguji sensitivitas terhadap kondisi tertentu. Angka tersebut bukan ramalan, forecast resmi, probabilitas kejadian, atau jaminan bahwa kondisi masa depan akan mengikuti lintasan yang ditampilkan. Perubahan asumsi dapat menghasilkan keluaran yang berbeda. Pengguna bertanggung jawab menilai kewajaran asumsi sebelum memakai hasil simulasi.
+
+### Harga pasar, HET, dan harga konsumen
+
+Harga BBM, LPG, pangan, listrik, dan kebutuhan dasar dapat berbeda antarwilayah, waktu, kualitas produk, saluran distribusi, jenis penjual, biaya transportasi, serta ketentuan lokal. Khusus LPG subsidi 3 kg, HET yang ditetapkan pemerintah daerah berlaku pada tahap distribusi yang ditentukan dalam regulasi (umumnya tingkat pangkalan/subpenyalur), sedangkan harga pengecer atau pantauan pasar menggambarkan laporan harga yang ditemui atau dibayar konsumen pada lokasi dan waktu tertentu. **Harga pengecer bukan HET resmi.** Rentang harga dalam dataset pengecer bukan survei statistik yang seragam, bukan rata-rata provinsi, dan tidak membuktikan dengan sendirinya adanya pelanggaran oleh penjual atau distributor. Cakupan 14 dari 38 provinsi pada versi dataset saat ini hanya menunjukkan wilayah dengan catatan yang dapat ditelusuri, bukan keseluruhan kondisi pasar nasional.
+
+### Pengolahan dan interpretasi data
+
+Agregasi, konversi satuan, pemilihan observasi, dan visualisasi dapat mempengaruhi cara angka dibaca. Rata-rata sederhana dari titik pasar bukan indeks harga nasional berbobot. Estimasi harga World Bank RTFP menggabungkan pengukuran langsung dan pemodelan untuk mengisi atau memperkirakan nilai yang hilang; angka tersebut tidak identik dengan CPI resmi BPS atau harga transaksi seluruh pasar. Data nominal tidak boleh ditafsirkan sebagai data riil tanpa deflator yang sesuai. Data yang tidak tersedia tidak boleh ditafsirkan sebagai nol, tidak adanya transaksi, atau tidak adanya masalah.
+
+### Sumber pihak ketiga, merek, dan tanggung jawab pengguna
+
+Data, statistik, peraturan, kutipan faktual, publikasi, foto, logo, merek, library eksternal, serta materi pihak ketiga tetap menjadi milik atau berada di bawah ketentuan pemilik/penerbit masing-masing. Pencantuman URL atau atribusi tidak dengan sendirinya memberikan hak untuk menyalin, mengemas ulang, atau mendistribusikan ulang seluruh materi tersebut. Pengguna wajib memeriksa ketentuan sumber sebelum menggunakan kembali data atau konten, menyertakan atribusi yang diwajibkan, dan tidak menyiratkan dukungan atau afiliasi institusional.
+
+Dashboard dan dataset hasil kompilasi disediakan **"sebagaimana adanya"** dan **"sebagaimana tersedia"**, tanpa jaminan tersurat maupun tersirat. Sejauh diizinkan oleh hukum yang berlaku, pengelola dan kontributor proyek tidak bertanggung jawab atas kerugian atau klaim yang timbul dari penggunaan, interpretasi, ketidakakuratan, keterlambatan, atau ketidaktersediaan dashboard dan datanya. Ketentuan ini tidak mengurangi hak atau kewajiban yang tidak dapat dikesampingkan menurut hukum.
 
 ## Prinsip metodologi
 
@@ -318,7 +355,17 @@ Koneksi internet diperlukan untuk memuat Chart.js dari CDN. File FPDB, dataset L
 
 ## Lisensi dan penggunaan ulang
 
-Belum ada lisensi perangkat lunak terpisah yang dinyatakan untuk repository ini, kecuali jika ditambahkan kemudian. Patuhi ketentuan dan kewajiban atribusi dari setiap dataset sumber, publikasi, dan library pihak ketiga. Jangan menyiratkan dukungan atau pengesahan institusional.
+### Kode asli proyek — MIT
+
+Kode sumber asli yang dibuat khusus untuk repository ini dilisensikan di bawah **MIT License**. Lihat file [LICENSE](LICENSE). Lisensi ini memberi izin untuk menggunakan, menyalin, memodifikasi, menggabungkan, menerbitkan, mendistribusikan, mensublisensikan, dan/atau menjual kode yang tercakup, dengan tetap menyertakan pemberitahuan hak cipta dan teks lisensi.
+
+### Dataset dan materi pihak ketiga — tidak tercakup oleh MIT
+
+**MIT License tidak melisensikan ulang seluruh isi repository.** File data dan materi dari pihak ketiga — termasuk **fpdb.csv**, **bbm_household_prices.csv.gz.b64**, **pln_household_tariffs.csv.gz.b64**, **lpg_household_prices.csv**, **lpg_3kg_retail_prices.csv**, **household_welfare_indicators.csv**, serta library, logo, foto, publikasi, dan konten eksternal — dikecualikan dari pemberian lisensi MIT sejauh materi tersebut berasal dari atau memiliki hak pada pihak lain. Ketentuan penggunaan, izin akses, hak cipta, dan kewajiban atribusinya mengikuti sumber atau pemilik masing-masing.
+
+Dataset yang dikompilasi oleh proyek tetap harus digunakan dengan memperhatikan hak dan ketentuan sumber asal. Pencantuman sebuah file di repository publik bukan pernyataan bahwa semua isi file tersebut bebas lisensi, domain publik, atau boleh didistribusikan ulang tanpa syarat. Periksa bagian [Sumber dan atribusi](#sumber-dan-atribusi) serta ketentuan penerbit data sebelum menggunakan ulang atau mendistribusikan data.
+
+Nama institusi, nama produk, merek dagang, dan logo tetap milik pemiliknya. Tidak ada lisensi atau izin untuk menggunakan merek/logo pihak ketiga yang diberikan melalui repository ini.
 
 ---
 
