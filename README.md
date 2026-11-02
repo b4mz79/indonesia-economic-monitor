@@ -19,7 +19,7 @@ Navigasi utama:
 |---|---|---|
 | Ringkasan proyek | [`index.html`](index.html) | Konteks, kerangka analisis, sumber data, asumsi, dan navigasi dashboard |
 | Indonesia Economic Risk Dashboard | [`dashboard.html`](dashboard.html) | Kerangka indikator risiko makro dan stress test 2027–2030 |
-| Household Cost & Basic Needs Dashboard | [`dashboard-mikro.html`](dashboard-mikro.html) | Harga BBM, tarif PLN per golongan rumah tangga, database harga pangan, Susenas, dan simulator biaya |
+| Household Cost & Basic Needs Dashboard | [`dashboard-mikro.html`](dashboard-mikro.html) | Harga BBM, tarif PLN, LPG subsidi/nonsubsidi, pengangguran, upah, kemiskinan, daya beli, ketimpangan, pangan, dan simulator biaya |
 
 ## Tujuan dan ruang lingkup
 
@@ -94,6 +94,38 @@ Dataset mencakup tujuh kelompok rumah tangga: 450 VA subsidi, 900 VA subsidi, 90
 Tarif 450 VA dan 900 VA subsidi dalam dataset merupakan referensi tarif prabayar tunggal; tarif pascabayar memakai blok pemakaian sehingga angka tunggal tidak boleh dibaca sebagai rata-rata tagihan. Snapshot bulanan yang tidak ditemukan tidak diinterpolasi. Tarif nominal juga tidak sama dengan pengeluaran listrik aktual setelah subsidi, kompensasi, diskon, dan pola konsumsi.
 
 Semua angka dapat ditelusuri melalui URL sumber pada setiap baris. Kedua seri ini merupakan himpunan observasi terdokumentasi, bukan panel bulanan lengkap untuk seluruh jenis BBM dan golongan pelanggan.
+
+## LPG Household Price Dataset
+
+File publik: [`lpg_household_prices.csv`](lpg_household_prices.csv).
+
+Dataset ini memisahkan:
+- **LPG 3 kg bersubsidi:** HET tingkat pangkalan yang ditetapkan pemerintah daerah. Contoh terverifikasi saat ini berfokus pada Kota Bandung/Bandung Raya, bukan seri nasional.
+- **Bright Gas 5,5 kg dan 12 kg:** snapshot harga nonsubsidi tingkat agen menurut zona dan tanggal sumber. Harga agen bukan selalu harga akhir yang dibayar konsumen; biaya distribusi tambahan dapat berlaku.
+
+Setiap baris memuat tanggal observasi, produk/kapasitas, harga per tabung, lokasi, level administrasi, tahap harga, status implementasi, presisi tanggal, sumber, URL, dan catatan. Status `conditional_schedule_unverified` adalah ketentuan yang diumumkan dalam keputusan, tetapi belum dipastikan terlaksana; jangan perlakukan sebagai tarif aktual.
+
+**Penting:** HET LPG 3 kg bukan angka nasional tunggal. Jangan menggunakan HET Kota Bandung untuk seluruh Jawa Barat/Indonesia. Snapshot harga nonsubsidi tidak membentuk panel bulanan nasional dan tidak diinterpolasi.
+
+## Household Welfare and Labour Market Dataset
+
+File publik: [`household_welfare_indicators.csv`](household_welfare_indicators.csv). Dataset saat ini berisi delapan keluarga indikator:
+1. **Pengeluaran riil per kapita per tahun yang disesuaikan** — proxy standar hidup layak berdasarkan konsumsi Susenas yang disesuaikan dengan IHK dan PPP (komponen IPM). Nilai bukan pendapatan disposabel atau upah.
+2. **Upah rata-rata buruh** — nilai nominal bulanan pekerja buruh/karyawan/pegawai. Belum dideflasi dan tidak mencakup semua pekerja mandiri/informal.
+3. **TPT** — penganggur sebagai persentase angkatan kerja.
+4. **TPAK** — partisipasi penduduk usia kerja dalam angkatan kerja.
+5. **Proporsi pekerja informal** — menggunakan klasifikasi status pekerjaan BPS.
+6. **Kemiskinan** — persentase penduduk di bawah garis kemiskinan, hasil Susenas.
+7. **Gini Ratio** — ketimpangan distribusi pengeluaran, bukan pendapatan.
+8. **Porsi pengeluaran 40% terbawah** — ukuran distribusi pengeluaran menurut kriteria Bank Dunia.
+
+Frekuensi dan periode sumber dipertahankan:
+- Sakernas umumnya menggunakan observasi Februari atau Agustus; jangan menyatukan keduanya seolah satu survei bulanan.
+- Kemiskinan, Gini, dan distribusi pengeluaran memakai periode Susenas Maret/September yang tersedia.
+- Pengeluaran riil per kapita yang disesuaikan merupakan indikator IPM tahunan; nilai 2020–2025 menggunakan seri nasional BPS.
+- Semua nilai upah pada file adalah **nominal**. Penghitungan upah riil memerlukan deflator IHK yang periodenya cocok; dashboard tidak membuat klaim upah riil dari selisih inflasi sederhana.
+
+Satu indikator tidak cukup untuk mewakili daya beli. Kombinasi pengeluaran riil per kapita, upah, kemiskinan, distribusi pengeluaran, TPT, TPAK, dan informalitas memberikan konteks yang lebih luas. Kualitas pekerjaan, jam kerja, setengah pengangguran, dan pendapatan rumah tangga tetap perlu diperluas saat seri data yang sebanding tersedia.
 
 ## Food Price Database (FPDB)
 
@@ -210,6 +242,8 @@ repository-root/
 ├── fpdb.csv
 ├── bbm_household_prices.csv.gz.b64
 ├── pln_household_tariffs.csv.gz.b64
+├── lpg_household_prices.csv
+├── household_welfare_indicators.csv
 ├── trim_fpdb.py
 ├── README.md
 └── .gitignore
@@ -247,6 +281,8 @@ Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tida
 - Profil rumah tangga dan asumsi pertumbuhan default pada simulator mikro bersifat ilustratif dan dapat diubah pengguna; bukan rata-rata rumah tangga resmi.
 - Dataset BBM 2016–2026 terdiri dari 49 snapshot terpilih, bukan seri harian/bulanan lengkap; tanggal dan cakupan wilayah berbeda menurut sumber.
 - Dataset PLN 2016–2026 terdiri dari 71 catatan untuk tujuh golongan rumah tangga; jenis catatan dan ketersediaan snapshot tidak seragam antarperiode, dan data kosong tidak diinterpolasi.
+- Dataset LPG 3 kg saat ini berfokus pada contoh HET Kota Bandung/Bandung Raya, sedangkan LPG nonsubsidi merupakan snapshot tingkat agen dari sejumlah zona; keduanya bukan deret nasional bulanan lengkap.
+- Indikator daya beli dan ketenagakerjaan memiliki frekuensi yang berbeda (IPM tahunan, Sakernas Februari/Agustus, Susenas Maret/September); angka nominal upah tidak boleh disebut sebagai upah riil.
 - HET LPG dan harga eceran membutuhkan catatan spesifik wilayah serta waktu; satu nilai nasional tidak boleh diasumsikan.
 - Data Susenas membutuhkan harmonisasi dan interpretasi hati-hati antarputaran survei serta perubahan kuesioner/desain.
 - Database RTFP mengandung estimasi berbasis model dan cakupan pasar yang bervariasi; nilainya dapat direvisi pada rilis berikutnya.
@@ -259,7 +295,7 @@ Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tida
 - Python standard library (`csv`, `pathlib`, dan modul terkait) untuk memangkas CSV FPDB.
 - GitHub Pages atau layanan static hosting lain untuk publikasi.
 
-Koneksi internet diperlukan untuk memuat Chart.js dari CDN. File FPDB dan dua arsip energi dibaca dari direktori publik yang sama; arsip energi didekompresi oleh browser.
+Koneksi internet diperlukan untuk memuat Chart.js dari CDN. File FPDB, dataset LPG, indikator kesejahteraan, dan dua arsip energi dibaca dari direktori publik yang sama; arsip energi didekompresi oleh browser.
 
 ## Lisensi dan penggunaan ulang
 
