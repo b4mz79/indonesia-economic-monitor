@@ -9,9 +9,9 @@ Proyek dashboard publik dan independen untuk mengeksplorasi bagaimana risiko geo
 
 ## Website publik
 
-Setelah GitHub Pages aktif, ganti placeholder berikut dengan URL yang ditampilkan pada **Repository → Settings → Pages**:
+Portal publik GitHub Pages:
 
-- **Website:** `https://<USERNAME>.github.io/<REPOSITORY>/`
+- **Website:** https://b4mz79.github.io/indonesia-economic-monitor/
 
 Navigasi utama:
 
