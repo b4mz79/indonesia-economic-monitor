@@ -988,7 +988,7 @@ function fpNumber(value) {
   return Number.isFinite(n) ? n : NaN;
 }
 
-function fpSetOptions(id, values, firstLabel) {
+function fpSetOptions(id, values, firstLabel, preferredValue = null) {
   const el = document.getElementById(id);
   const oldValue = el.value;
 
@@ -1002,7 +1002,11 @@ function fpSetOptions(id, values, firstLabel) {
   }
 
   [...new Set(values.filter(v => v && String(v).trim()))]
-    .sort((a, b) => String(a).localeCompare(String(b)))
+    .sort((a, b) => {
+      if (a === preferredValue) return -1;
+      if (b === preferredValue) return 1;
+      return String(a).localeCompare(String(b));
+    })
     .forEach(value => {
       const opt = document.createElement('option');
       opt.value = value;
@@ -1021,6 +1025,8 @@ function fpSetStatus(message) {
 
 async function fpLoadDatabase() {
   fpSetStatus('Mengunduh dan membaca fpdb.csv...');
+  const coverage = document.getElementById('foodCoverage');
+  if (coverage) coverage.textContent = 'Memuat...';
 
   try {
     const response = await fetch(new URL('./fpdb.csv', window.location.href), {
@@ -1059,7 +1065,11 @@ async function fpLoadDatabase() {
       throw new Error('Kolom close estimate (c_) tidak ditemukan.');
     }
 
-    fpSetOptions('fpCommodity', commodities);
+    // Beras menjadi pilihan awal; pilihan pengguna tetap dipertahankan saat reload.
+    fpSetOptions('fpCommodity', commodities, null, 'rice');
+    document.getElementById('foodCoverage').textContent =
+      fpRows.length.toLocaleString('id-ID') + ' observasi';
+
     fpSetOptions(
       'fpProvince',
       fpRows.map(r => r.adm1_name),
@@ -1080,6 +1090,8 @@ async function fpLoadDatabase() {
     fpRenderChart();
 
   } catch (error) {
+    const coverage = document.getElementById('foodCoverage');
+    if (coverage) coverage.textContent = 'Gagal dimuat';
     fpSetStatus(
       'Gagal memuat database: ' + error.message +
       '. Pastikan fpdb.csv ada di folder yang sama dan ikut disajikan oleh preview localhost Firefox. URL yang dicoba: ' + new URL('./fpdb.csv', window.location.href).href
