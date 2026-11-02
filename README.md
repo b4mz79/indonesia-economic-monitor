@@ -100,8 +100,8 @@ Semua angka dapat ditelusuri melalui URL sumber pada setiap baris. Kedua seri in
 File publik: [`lpg_household_prices.csv`](lpg_household_prices.csv).
 
 Dataset ini memisahkan:
-- **LPG 3 kg bersubsidi:** HET tingkat pangkalan yang ditetapkan pemerintah daerah. Contoh terverifikasi saat ini berfokus pada Kota Bandung/Bandung Raya, bukan seri nasional.
-- **Bright Gas 5,5 kg dan 12 kg:** snapshot harga nonsubsidi tingkat agen menurut zona dan tanggal sumber. Harga agen bukan selalu harga akhir yang dibayar konsumen; biaya distribusi tambahan dapat berlaku.
+- **LPG 3 kg bersubsidi:** HET per kabupaten/kota dan harga pantauan di pasar. Kota Bandung, Kabupaten Bandung, dan Kota Cimahi memiliki dasar dan tahapan penyesuaian yang tidak identik. Harga pada e-Pasar Kota Cimahi tanggal 9–15 Oktober 2026 merupakan harga pantauan pasar (Rp25.000/tabung), bukan HET pangkalan atau bukti tunggal pelanggaran.
+- **Bright Gas 5,5 kg dan 12 kg:** snapshot harga nonsubsidi tingkat agen menurut zona dan tanggal sumber, termasuk table regional 15 Juli 2026 serta pembaruan harga Pulau Jawa pada 15 Agustus 2026. Harga agen bukan selalu harga akhir yang dibayar konsumen; biaya distribusi tambahan dapat berlaku.
 
 Setiap baris memuat tanggal observasi, produk/kapasitas, harga per tabung, lokasi, level administrasi, tahap harga, status implementasi, presisi tanggal, sumber, URL, dan catatan. Status `conditional_schedule_unverified` adalah ketentuan yang diumumkan dalam keputusan, tetapi belum dipastikan terlaksana; jangan perlakukan sebagai tarif aktual.
 
@@ -118,6 +118,9 @@ File publik: [`household_welfare_indicators.csv`](household_welfare_indicators.c
 6. **Kemiskinan** — persentase penduduk di bawah garis kemiskinan, hasil Susenas.
 7. **Gini Ratio** — ketimpangan distribusi pengeluaran, bukan pendapatan.
 8. **Porsi pengeluaran 40% terbawah** — ukuran distribusi pengeluaran menurut kriteria Bank Dunia.
+9. **Setengah pengangguran** — tingkat dan jumlah pekerja yang masih menginginkan/tersedia untuk tambahan jam/pekerjaan; indikator labor underutilization yang tidak tertangkap hanya oleh TPT.
+10. **Jumlah angkatan kerja dan penduduk bekerja** — ukuran stok tenaga kerja nasional pada November 2025 dan Februari 2026.
+11. **Garis kemiskinan per kapita/bulan** — batas minimum pengeluaran nasional untuk makanan dan nonmakanan.
 
 Frekuensi dan periode sumber dipertahankan:
 - Sakernas umumnya menggunakan observasi Februari atau Agustus; jangan menyatukan keduanya seolah satu survei bulanan.
@@ -125,7 +128,7 @@ Frekuensi dan periode sumber dipertahankan:
 - Pengeluaran riil per kapita yang disesuaikan merupakan indikator IPM tahunan; nilai 2020–2025 menggunakan seri nasional BPS.
 - Semua nilai upah pada file adalah **nominal**. Penghitungan upah riil memerlukan deflator IHK yang periodenya cocok; dashboard tidak membuat klaim upah riil dari selisih inflasi sederhana.
 
-Satu indikator tidak cukup untuk mewakili daya beli. Kombinasi pengeluaran riil per kapita, upah, kemiskinan, distribusi pengeluaran, TPT, TPAK, dan informalitas memberikan konteks yang lebih luas. Kualitas pekerjaan, jam kerja, setengah pengangguran, dan pendapatan rumah tangga tetap perlu diperluas saat seri data yang sebanding tersedia.
+Satu indikator tidak cukup untuk mewakili daya beli. Kombinasi pengeluaran riil per kapita, upah, kemiskinan, distribusi pengeluaran, TPT, setengah pengangguran, TPAK, informalitas, jumlah penduduk bekerja, dan garis kemiskinan memberikan konteks yang lebih luas. Kualitas pekerjaan, jam kerja, dan pendapatan rumah tangga tetap perlu diperluas saat seri data yang sebanding tersedia. Seri setengah pengangguran nasional 2023–2024 kini telah ditambahkan: 6,68% menjadi 7,99%, atau 9,34 juta menjadi 11,56 juta pekerja.
 
 ## Food Price Database (FPDB)
 
@@ -251,6 +254,8 @@ repository-root/
 
 Jangan publikasikan backup besar, arsip ZIP sementara, atau file lokal yang tidak diperlukan. File publik `fpdb.csv` memang dimaksudkan sebagai dataset hasil pemangkasan dari 2016 ke atas.
 
+- BPS — Indikator Pekerjaan Layak di Indonesia 2024 (Sakernas), untuk indikator setengah pengangguran.
+
 ## Sumber dan atribusi
 
 Kerangka dashboard menggunakan informasi dan/atau dataset publik dari sejumlah institusi berikut. Periksa metadata, tanggal publikasi, versi, metodologi, serta ketentuan penggunaan pada masing-masing sumber sebelum mengutip atau menggunakan ulang data:
@@ -281,7 +286,7 @@ Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tida
 - Profil rumah tangga dan asumsi pertumbuhan default pada simulator mikro bersifat ilustratif dan dapat diubah pengguna; bukan rata-rata rumah tangga resmi.
 - Dataset BBM 2016–2026 terdiri dari 49 snapshot terpilih, bukan seri harian/bulanan lengkap; tanggal dan cakupan wilayah berbeda menurut sumber.
 - Dataset PLN 2016–2026 terdiri dari 71 catatan untuk tujuh golongan rumah tangga; jenis catatan dan ketersediaan snapshot tidak seragam antarperiode, dan data kosong tidak diinterpolasi.
-- Dataset LPG 3 kg saat ini berfokus pada contoh HET Kota Bandung/Bandung Raya, sedangkan LPG nonsubsidi merupakan snapshot tingkat agen dari sejumlah zona; keduanya bukan deret nasional bulanan lengkap.
+- Dataset LPG 3 kg merupakan contoh HET beberapa wilayah Bandung Raya ditambah harga pantauan pasar Kota Cimahi, bukan panel nasional. Harga Bright Gas nonsubsidi merupakan snapshot regional tingkat agen, bukan deret nasional bulanan lengkap.
 - Indikator daya beli dan ketenagakerjaan memiliki frekuensi yang berbeda (IPM tahunan, Sakernas Februari/Agustus, Susenas Maret/September); angka nominal upah tidak boleh disebut sebagai upah riil.
 - HET LPG dan harga eceran membutuhkan catatan spesifik wilayah serta waktu; satu nilai nasional tidak boleh diasumsikan.
 - Data Susenas membutuhkan harmonisasi dan interpretasi hati-hati antarputaran survei serta perubahan kuesioner/desain.
