@@ -19,7 +19,7 @@ Navigasi utama:
 |---|---|---|
 | Ringkasan proyek | [`index.html`](index.html) | Konteks, kerangka analisis, sumber data, asumsi, dan navigasi dashboard |
 | Indonesia Economic Risk Dashboard | [`dashboard.html`](dashboard.html) | Kerangka indikator risiko makro dan stress test 2027–2030 |
-| Household Cost & Basic Needs Dashboard | [`dashboard-mikro.html`](dashboard-mikro.html) | Paparan biaya rumah tangga, beberapa peristiwa kebijakan energi, database harga pangan, dan simulator biaya |
+| Household Cost & Basic Needs Dashboard | [`dashboard-mikro.html`](dashboard-mikro.html) | Harga BBM, tarif PLN per golongan rumah tangga, database harga pangan, Susenas, dan simulator biaya |
 
 ## Tujuan dan ruang lingkup
 
@@ -71,6 +71,29 @@ Dashboard mikro berfokus pada saluran biaya yang paling dekat dengan anggaran ru
 Simulator rumah tangga di dashboard mikro merupakan **alat sensitivitas ilustratif**. Nilai pengeluaran awal, porsi anggaran, dan laju kenaikan biaya dapat diubah pengguna. Nilai default bukan rata-rata rumah tangga, kelompok desil, atau proyeksi resmi BPS.
 
 Salah satu lintasan stress biaya yang dibahas menggunakan asumsi inflasi tahunan 5,0% (2027), 7,5% (2028), 9,0% (2029), dan 6,5% (2030). Secara majemuk, lintasan ini setara dengan kenaikan tingkat harga sekitar 31% dari akhir 2026 hingga 2030. Ini adalah ilustrasi skenario, bukan forecast resmi dan bukan pengganti penghitungan berdasarkan keranjang konsumsi aktual.
+
+## Household Energy Dataset — BBM dan tarif PLN
+
+Dashboard mikro memuat dua dataset energi rumah tangga yang disimpan sebagai arsip gzip berformat Base64 text agar dapat ditangani GitHub Contents API sebagai file teks:
+
+- [Arsip harga BBM rumah tangga](bbm_household_prices.csv.gz.b64): 49 snapshot harga — Premium (5), Pertalite (17), dan Pertamax (27).
+- [Arsip tarif PLN rumah tangga](pln_household_tariffs.csv.gz.b64): 71 catatan tarif untuk tujuh kelompok rumah tangga, dari 450 VA hingga 6.600 VA ke atas.
+
+Halaman dashboard mendekompresi kedua arsip di browser modern melalui `DecompressionStream('gzip')`. Tombol unduh pada masing-masing bagian menghasilkan file CSV biasa. File sumber menyimpan tanggal/presisi tanggal, jenis produk atau golongan, harga/tarif, wilayah acuan, nama sumber, URL, dan catatan metodologi.
+
+### Metodologi BBM
+
+Harga adalah snapshot yang dilaporkan oleh sumber, bukan observasi harian atau bulanan lengkap. Harga Pertamax dapat berbeda antarwilayah. Sebagian nilai historis berasal dari tabel retrospektif media dengan presisi bulan dan/atau wilayah yang tidak dirinci. Karena itu dashboard menampilkan titik data tanpa menghubungkannya menjadi tren kontinu. Premium penugasan luar Jamali dibedakan dari harga di wilayah Jamali.
+
+Sumber per baris mencakup ESDM, Sekretariat Kabinet, detikOto, Katadata, ANTARA, Kementerian PANRB, detikFinance, dan Tirto. Tautan dan cakupan wilayah tersedia pada kolom `source_name`, `source_url`, `reference_area`, dan `source_note`.
+
+### Metodologi tarif PLN
+
+Dataset mencakup tujuh kelompok rumah tangga: 450 VA subsidi, 900 VA subsidi, 900 VA RTM, 1.300 VA, 2.200 VA, 3.500–5.500 VA, dan ≥6.600 VA. Jenis catatan dibedakan menjadi snapshot bulanan, interval tarif efektif, skedul tarif yang dipublikasikan, dan snapshot tarif resmi terbaru.
+
+Tarif 450 VA dan 900 VA subsidi dalam dataset merupakan referensi tarif prabayar tunggal; tarif pascabayar memakai blok pemakaian sehingga angka tunggal tidak boleh dibaca sebagai rata-rata tagihan. Snapshot bulanan yang tidak ditemukan tidak diinterpolasi. Tarif nominal juga tidak sama dengan pengeluaran listrik aktual setelah subsidi, kompensasi, diskon, dan pola konsumsi.
+
+Semua angka dapat ditelusuri melalui URL sumber pada setiap baris. Kedua seri ini merupakan himpunan observasi terdokumentasi, bukan panel bulanan lengkap untuk seluruh jenis BBM dan golongan pelanggan.
 
 ## Food Price Database (FPDB)
 
@@ -185,6 +208,8 @@ repository-root/
 ├── dashboard.html
 ├── dashboard-mikro.html
 ├── fpdb.csv
+├── bbm_household_prices.csv.gz.b64
+├── pln_household_tariffs.csv.gz.b64
 ├── trim_fpdb.py
 ├── README.md
 └── .gitignore
@@ -220,7 +245,8 @@ Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tida
 
 - Lintasan stress test makro adalah skenario kondisional, bukan forecast probabilistik.
 - Profil rumah tangga dan asumsi pertumbuhan default pada simulator mikro bersifat ilustratif dan dapat diubah pengguna; bukan rata-rata rumah tangga resmi.
-- Peristiwa tarif listrik dan BBM yang ditampilkan saat ini merupakan titik historis terpilih, bukan seri harga lengkap 2016–2026 untuk seluruh produk, wilayah, dan golongan pelanggan.
+- Dataset BBM 2016–2026 terdiri dari 49 snapshot terpilih, bukan seri harian/bulanan lengkap; tanggal dan cakupan wilayah berbeda menurut sumber.
+- Dataset PLN 2016–2026 terdiri dari 71 catatan untuk tujuh golongan rumah tangga; jenis catatan dan ketersediaan snapshot tidak seragam antarperiode, dan data kosong tidak diinterpolasi.
 - HET LPG dan harga eceran membutuhkan catatan spesifik wilayah serta waktu; satu nilai nasional tidak boleh diasumsikan.
 - Data Susenas membutuhkan harmonisasi dan interpretasi hati-hati antarputaran survei serta perubahan kuesioner/desain.
 - Database RTFP mengandung estimasi berbasis model dan cakupan pasar yang bervariasi; nilainya dapat direvisi pada rilis berikutnya.
@@ -233,7 +259,7 @@ Ketentuan penggunaan dataset World Bank mewajibkan atribusi yang sesuai dan tida
 - Python standard library (`csv`, `pathlib`, dan modul terkait) untuk memangkas CSV FPDB.
 - GitHub Pages atau layanan static hosting lain untuk publikasi.
 
-Koneksi internet diperlukan untuk memuat Chart.js dari CDN. File FPDB lokal dibaca dari direktori publik yang sama.
+Koneksi internet diperlukan untuk memuat Chart.js dari CDN. File FPDB dan dua arsip energi dibaca dari direktori publik yang sama; arsip energi didekompresi oleh browser.
 
 ## Lisensi dan penggunaan ulang
 
