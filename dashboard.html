@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indonesia Economic Risk Dashboard 2016–2030</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root {
+  --bg:#0b1220; --panel:#131e30; --panel2:#19263a;
+  --text:#e6edf7; --muted:#91a2b9;
+  --line:#28384e; --blue:#60a5fa;
+  --cyan:#22d3ee; --red:#fb7185;
+  --green:#34d399; --amber:#fbbf24;
+}
+* {box-sizing:border-box}
+body {
+  margin:0; background:var(--bg); color:var(--text);
+  font:14px/1.55 Inter,Segoe UI,Arial,sans-serif;
+}
+header {
+  padding:28px max(22px,4vw);
+  background:linear-gradient(120deg,#14243a,#101b2d);
+  border-bottom:1px solid var(--line);
+}
+.eyebrow {color:var(--cyan);font-size:11px;letter-spacing:2px;font-weight:700}
+h1 {font-size:clamp(24px,4vw,36px);margin:8px 0}
+.subtitle {color:var(--muted);max-width:850px}
+main {max-width:1500px;margin:auto;padding:24px}
+.section-title {
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin:30px 0 14px;
+}
+.section-title h2 {font-size:19px;margin:0}
+.small {color:var(--muted);font-size:12px}
+.toolbar {
+  display:flex;flex-wrap:wrap;gap:12px;align-items:center;
+  background:var(--panel);padding:14px 16px;
+  border:1px solid var(--line);border-radius:12px;
+}
+button,select {
+  background:var(--panel2);color:var(--text);
+  border:1px solid var(--line);border-radius:8px;
+  padding:9px 13px;cursor:pointer;
+}
+button.active {border-color:var(--cyan);color:var(--cyan)}
+input {accent-color:var(--cyan)}
+.kpis {
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;margin-top:18px;
+}
+.kpi,.card {
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:17px;
+}
+.kpi-label {font-size:11px;color:var(--muted);text-transform:uppercase}
+.kpi-value {font-size:27px;font-weight:750;margin:5px 0}
+.kpi-note {font-size:11px;color:var(--muted)}
+.grid {
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;
+}
+.card {min-width:0}
+.card h3 {font-size:15px;margin:0 0 3px}
+.card .desc {color:var(--muted);font-size:11px;margin-bottom:12px}
+.chart-wrap {height:255px;position:relative}
+.chart-wrap.short {height:220px}
+.subcharts {display:grid;grid-template-columns:1fr;gap:18px}
+.tag {
+  display:inline-block;border-radius:5px;padding:3px 7px;
+  font-size:10px;font-weight:650;background:#183448;color:var(--cyan);
+}
+.warning {background:#3b2d1c;color:var(--amber)}
+.danger {background:#3d202a;color:var(--red)}
+.good {background:#16382f;color:var(--green)}
+.note {
+  padding:14px;border-radius:9px;background:var(--panel2);
+  color:var(--muted);font-size:12px;margin-top:13px;
+}
+table {width:100%;border-collapse:collapse;font-size:12px}
+th,td {padding:11px;text-align:left;border-bottom:1px solid var(--line)}
+th {color:var(--muted);font-weight:600}
+.scenario-table {overflow-x:auto}
+footer {
+  border-top:1px solid var(--line);margin-top:35px;
+  padding:25px;color:var(--muted);font-size:11px;
+}
+a {color:var(--cyan);text-decoration:none}
+a:hover {text-decoration:underline}
+@media(max-width:850px) {
+  .grid {grid-template-columns:1fr}
+  main {padding:16px}
+}
+@media print {
+  body {background:white;color:#222}
+  .card,.kpi {break-inside:avoid}
+  .toolbar {display:none}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="eyebrow">MACROECONOMIC INTELLIGENCE • INDONESIA</div>
+  <h1>Indonesia Economic Risk Dashboard</h1>
+  <div class="subtitle">
+    Historical indicators: October 2016–October 2026 |
+    Conditional stress test: January 2027–December 2030.
+    Geopolitical, energy, trade, fiscal, financial and real-economy exposure.
+  </div>
+  <p><span class="tag warning">ANALYTICAL STRESS TEST — NOT OFFICIAL FORECAST</span></p>
+</header>
+
+<main>
+  <div class="toolbar">
+    <strong>Dashboard controls</strong>
+    <label><input id="stressToggle" type="checkbox" checked> Show stress scenario</label>
+    <label><input id="historyToggle" type="checkbox" checked> Show historical data</label>
+    <button onclick="window.print()">Print / Save PDF</button>
+    <button onclick="location.reload()">Reset</button>
+    <span class="small">Base date: 3 November 2026</span>
+  </div>
+
+  <div class="section-title">
+    <h2>Executive indicators</h2>
+    <span class="tag">LATEST AVAILABLE 2026</span>
+  </div>
+  <div class="kpis">
+    <div class="kpi">
+      <div class="kpi-label">GDP growth</div>
+      <div class="kpi-value">5.29%</div>
+      <div class="kpi-note">Q2 2026, year-on-year</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Consumer inflation</div>
+      <div class="kpi-value">3.23%</div>
+      <div class="kpi-note">October 2026, year-on-year</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Rupiah</div>
+      <div class="kpi-value">17,937</div>
+      <div class="kpi-note">IDR/USD, 2 October 2026</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">FX reserves</div>
+      <div class="kpi-value">$146.3B</div>
+      <div class="kpi-note">September 2026</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">ICP</div>
+      <div class="kpi-value">$112.81</div>
+      <div class="kpi-note">USD/barrel, September 2026</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Trade balance</div>
+      <div class="kpi-value">$10.61B</div>
+      <div class="kpi-note">January–September 2026</div>
+    </div>
+  </div>
+  <div class="note">
+    Data 2026 merupakan observasi parsial dengan periode pengukuran
+    berbeda. Jangan membandingkannya langsung dengan angka satu tahun penuh.
+  </div>
+
+  <div class="section-title">
+    <h2>Six strategic risk dimensions</h2>
+    <span class="small">2016–2030</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>01. Geopolitik & pertahanan</h3>
+      <div class="desc">Belanja militer sebagai persentase PDB</div>
+      <div class="chart-wrap"><canvas id="defense"></canvas></div>
+      <div class="note">
+        Proxy respons anggaran Indonesia terhadap lingkungan keamanan.
+        Bukan indeks langsung ancaman geopolitik.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>02. Energi & ketahanan pasokan</h3>
+      <div class="desc">Harga minyak dan perdagangan migas</div>
+      <div class="subcharts">
+        <div>
+          <div class="small">A. Indonesia Crude Price (USD/barrel)</div>
+          <div class="chart-wrap short"><canvas id="icp"></canvas></div>
+        </div>
+        <div>
+          <div class="small">B. Neraca perdagangan migas (USD miliar)</div>
+          <div class="chart-wrap short"><canvas id="oilgas"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>03. Perdagangan eksternal</h3>
+      <div class="desc">Surplus / defisit perdagangan barang (USD miliar)</div>
+      <div class="chart-wrap"><canvas id="trade"></canvas></div>
+      <div class="note">
+        Defisit perdagangan berkelanjutan dapat memperbesar kebutuhan
+        pembiayaan eksternal, terutama bila impor energi tetap mahal.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>04. Ketahanan fiskal</h3>
+      <div class="desc">Ruang fiskal dan pembiayaan pemerintah</div>
+      <div class="subcharts">
+        <div>
+          <div class="small">A. Utang bruto pemerintah umum (% PDB)</div>
+          <div class="chart-wrap short"><canvas id="debt"></canvas></div>
+        </div>
+        <div>
+          <div class="small">B. Defisit APBN (% PDB)</div>
+          <div class="chart-wrap short"><canvas id="deficit"></canvas></div>
+        </div>
+      </div>
+      <div class="note">
+        Seri historis utang menggunakan pemerintah umum; titik 2026
+        menggunakan utang pemerintah pusat. Definisi berbeda.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>05. Keuangan eksternal</h3>
+      <div class="desc">Stabilitas nilai tukar dan cadangan devisa</div>
+      <div class="subcharts">
+        <div>
+          <div class="small">A. Rupiah per USD (naik = rupiah melemah)</div>
+          <div class="chart-wrap short"><canvas id="fx"></canvas></div>
+        </div>
+        <div>
+          <div class="small">B. Cadangan devisa (USD miliar)</div>
+          <div class="chart-wrap short"><canvas id="reserves"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>06. Ekonomi riil</h3>
+      <div class="desc">Pertumbuhan dan stabilitas harga</div>
+      <div class="subcharts">
+        <div>
+          <div class="small">A. Pertumbuhan PDB riil (% yoy)</div>
+          <div class="chart-wrap short"><canvas id="gdp"></canvas></div>
+        </div>
+        <div>
+          <div class="small">B. Inflasi konsumen (% yoy)</div>
+          <div class="chart-wrap short"><canvas id="inflation"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>Worst-case conditional stress scenario</h2>
+    <span class="tag danger">2027–2030</span>
+  </div>
+  <div class="note">
+    Asumsi: gangguan energi dan pelayaran berulang; perang dagang
+    AS–China meningkat; koreksi valuasi AI dan pengetatan kredit
+    memicu perlambatan global berat pada 2029; ekspor Indonesia melemah
+    sementara biaya impor meningkat; rupiah tertekan dan cadangan devisa
+    menyusut. Jalur ini merupakan stress test, bukan forecast resmi.
+  </div>
+
+  <div class="card scenario-table" style="margin-top:15px">
+    <table>
+      <thead>
+        <tr>
+          <th>Indikator</th>
+          <th>2027</th>
+          <th>2028</th>
+          <th>2029</th>
+          <th>2030</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Belanja pertahanan (% PDB)</td><td>1.15</td><td>1.30</td><td>1.50</td><td>1.70</td></tr>
+        <tr><td>ICP (USD/barrel)</td><td>105</td><td>120</td><td>125</td><td>110</td></tr>
+        <tr><td>Neraca migas (USD B)</td><td>-25</td><td>-27</td><td>-30</td><td>-27</td></tr>
+        <tr><td>Neraca barang (USD B)</td><td>8</td><td>-5</td><td>-18</td><td>-10</td></tr>
+        <tr><td>Utang pemerintah (% PDB)</td><td>43.5</td><td>46.2</td><td>49.0</td><td>51.5</td></tr>
+        <tr><td>Defisit APBN (% PDB)</td><td>2.9</td><td>3.0</td><td>3.0</td><td>2.8</td></tr>
+        <tr><td>Rupiah (IDR/USD)</td><td>19,000</td><td>21,500</td><td>24,000</td><td>26,000</td></tr>
+        <tr><td>Cadangan devisa (USD B)</td><td>135</td><td>120</td><td>105</td><td>95</td></tr>
+        <tr><td>Pertumbuhan PDB (%)</td><td>3.8</td><td>2.0</td><td>-1.5</td><td>0.5</td></tr>
+        <tr><td>Inflasi (%)</td><td>5.0</td><td>7.5</td><td>9.0</td><td>6.5</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-title">
+    <h2>Stress-test interpretation</h2>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h3>2027 — Initial transmission</h3>
+      <p class="small">Energi impor mahal, kurs tertekan, kenaikan biaya produksi,
+      dan peningkatan kebutuhan subsidi.</p>
+    </div>
+    <div class="card">
+      <h3>2028 — Financial pressure</h3>
+      <p class="small">Refinancing lebih mahal, ekspor melemah,
+      investasi swasta melambat, dan ruang fiskal menyempit.</p>
+    </div>
+    <div class="card">
+      <h3>2029 — Severe stress</h3>
+      <p class="small">Skenario kontraksi ekonomi, tekanan kredit,
+      inflasi tinggi, pelemahan perdagangan, dan cadangan devisa turun.</p>
+    </div>
+    <div class="card">
+      <h3>2030 — Fragile recovery</h3>
+      <p class="small">Pertumbuhan kembali positif tetapi rendah.
+      Pemulihan daya beli dan investasi berlangsung lambat.</p>
+    </div>
+  </div>
+
+  <div class="section-title">
+    <h2>Data sources & methodology</h2>
+  </div>
+  <div class="card">
+    <p class="small">
+      Historis 2016–2025 menggunakan seri tahunan. Titik 2026
+      menggunakan observasi terakhir yang tersedia hingga Oktober,
+      dengan frekuensi dan periode berbeda.
+    </p>
+    <ul class="small">
+      <li><a href="https://www.bps.go.id/">BPS Indonesia</a> — perdagangan,
+        pertumbuhan PDB, inflasi.</li>
+      <li><a href="https://www.bi.go.id/">Bank Indonesia</a> — kurs,
+        cadangan devisa, stabilitas eksternal.</li>
+      <li><a href="https://fiskal.kemenkeu.go.id/">Kementerian Keuangan</a>
+        — utang dan defisit APBN.</li>
+      <li><a href="https://www.esdm.go.id/">Kementerian ESDM</a>
+        — ICP, minyak, gas, dan energi.</li>
+      <li><a href="https://www.sipri.org/">SIPRI</a> — belanja militer.</li>
+      <li><a href="https://www.imf.org/">IMF</a> — utang dan risiko fiskal global.</li>
+      <li><a href="https://www.worldbank.org/">World Bank</a>
+        — data makro dan proyeksi Indonesia.</li>
+    </ul>
+    <p class="small">
+      Angka historis dan snapshot yang ditampilkan merupakan baseline
+      kerja dari kompilasi sebelumnya. Verifikasi kembali ke seri sumber
+      primer sebelum digunakan untuk publikasi atau pengambilan keputusan.
+    </p>
+    <p class="small">
+      Stress scenario bukan probabilitas, ramalan resmi, atau estimasi
+      kerugian aktual. Asumsi utamanya adalah terjadinya beberapa
+      guncangan geopolitik, energi, perdagangan dan keuangan secara
+      bersamaan.
+    </p>
+  </div>
+</main>
+<footer>
+  INDONESIA ECONOMIC RISK DASHBOARD · VERSION 1.0<br>
+  Historical window: 2016–2026 · Conditional stress horizon: 2027–2030<br>
+  Analytical tool — not investment advice, official forecast, or
+  national security assessment.
+</footer>
+
+<script>
+const labels = Array.from({length:15},(_,i)=>2016+i);
+const hist = a => [...a,...Array(5).fill(null)];
+const future = (base,vals) => [
+  ...Array(9).fill(null),base,null,...vals
+];
+const point = (year,value) => labels.map(y=>y===year?value:null);
+
+const historyColor = "#60a5fa";
+const stressColor = "#fb7185";
+const partialColor = "#fbbf24";
+
+const charts = [];
+
+function makeLine(id,title,unit,history,stressValues,partial=null,
+                  type="line",beginZero=false){
+  const sets = [
+    {
+      label:"Historis 2016–2025",
+      data:hist(history),
+      borderColor:historyColor,
+      backgroundColor:historyColor,
+      borderWidth:2,
+      pointRadius:3,
+      tension:.25,
+      fill:false
+    }
+  ];
+  if(stressValues){
+    sets.push({
+      label:"Stress scenario 2027–2030",
+      data:future(history.at(-1),stressValues),
+      borderColor:stressColor,
+      backgroundColor:stressColor,
+      borderDash:[7,5],
+      borderWidth:2,
+      pointRadius:4,
+      tension:.2,
+      spanGaps:false
+    });
+  }
+  if(partial){
+    sets.push({
+      label:partial.label,
+      data:point(2026,partial.value),
+      borderColor:partialColor,
+      backgroundColor:partialColor,
+      pointRadius:8,
+      pointStyle:"rectRot",
+      showLine:false
+    });
+  }
+  const c=new Chart(document.getElementById(id),{
+    type,
+    data:{labels,datasets:sets},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:"index",intersect:false},
+      plugins:{
+        legend:{labels:{color:"#aebbd0",boxWidth:12,font:{size:10}}},
+        tooltip:{callbacks:{label:x=>`${x.dataset.label}: ${x.formattedValue} ${unit}`}}
+      },
+      scales:{
+        x:{ticks:{color:"#91a2b9"},grid:{color:"#28384e"}},
+        y:{beginAtZero:beginZero,
+           ticks:{color:"#91a2b9"},
+           grid:{color:"#28384e"},
+           title:{display:true,text:unit,color:"#91a2b9"}}
+      }
+    }
+  });
+  charts.push(c);
+}
+
+makeLine("defense","Defense","% PDB",
+ [.792,.865,.719,.729,.886,.742,.768,.821,.86,1.04],
+ [1.15,1.30,1.50,1.70]);
+
+makeLine("icp","ICP","USD/barel",
+ [40.13,51.19,67.47,62.37,40.39,68.47,97.03,78.43,78.12,67.38],
+ [105,120,125,110],
+ {label:"September 2026",value:112.81});
+
+makeLine("oilgas","Neraca migas","USD miliar",
+ [-5.63,-8.57,-12.70,-10.10,-6.01,-13.28,-24.42,-19.91,-20.40,-19.95],
+ [-25,-27,-30,-27],
+ {label:"Januari–September 2026",value:-23.6});
+
+makeLine("trade","Neraca perdagangan","USD miliar",
+ [9.53,11.84,-8.70,-3.59,21.62,35.42,54.46,35.67,31.33,41.05],
+ [8,-5,-18,-10],
+ {label:"Januari–September 2026",value:10.61});
+
+makeLine("debt","Utang pemerintah","% PDB",
+ [28.0,29.4,30.4,30.6,39.7,41.1,40.1,39.6,40.2,40.9],
+ [43.5,46.2,49.0,51.5],
+ {label:"Utang pemerintah pusat Juni 2026",value:41.26});
+
+makeLine("deficit","Defisit APBN","% PDB",
+ [2.49,2.51,1.82,2.20,6.14,4.57,2.35,1.61,2.29,2.92],
+ [2.9,3.0,3.0,2.8],
+ {label:"Januari–September 2026",value:1.24});
+
+makeLine("fx","Nilai tukar","IDR/USD",
+ [13308,13381,14237,14148,14582,14308,14850,15237,15856,16478],
+ [19000,21500,24000,26000],
+ {label:"2 Oktober 2026",value:17937});
+
+makeLine("reserves","Cadangan devisa","USD miliar",
+ [116.37,130.22,120.66,129.19,135.92,144.91,137.22,146.36,155.71,156.54],
+ [135,120,105,95],
+ {label:"September 2026",value:146.3});
+
+makeLine("gdp","Pertumbuhan PDB","%",
+ [5.03,5.07,5.17,5.02,-2.07,3.70,5.31,5.05,5.03,5.11],
+ [3.8,2.0,-1.5,0.5],
+ {label:"Q2 2026",value:5.29});
+
+makeLine("inflation","Inflasi CPI","%",
+ [3.02,3.61,3.13,2.72,1.68,1.87,5.51,2.61,1.57,2.92],
+ [5.0,7.5,9.0,6.5],
+ {label:"Oktober 2026",value:3.23});
+
+document.getElementById("stressToggle").addEventListener("change",e=>{
+  charts.forEach(c=>{
+    c.data.datasets.forEach((d,i)=>{
+      if(d.label.startsWith("Stress")) d.hidden=!e.target.checked;
+    });
+    c.update();
+  });
+});
+document.getElementById("historyToggle").addEventListener("change",e=>{
+  charts.forEach(c=>{
+    c.data.datasets.forEach(d=>{
+      if(d.label.startsWith("Historis")) d.hidden=!e.target.checked;
+    });
+    c.update();
+  });
+});
+</script>
+</body>
+</html>

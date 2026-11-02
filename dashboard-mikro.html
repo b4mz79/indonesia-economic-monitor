@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Indonesia Household Cost Dashboard v3</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+ --bg:#0b1220;--panel:#142035;--panel2:#1c2b42;
+ --text:#e7edf6;--muted:#91a1b7;--line:#2c3c53;
+ --blue:#58a6ff;--cyan:#50d6d0;--orange:#ffb454;
+ --red:#ff7474;--green:#5bd6a2;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+ font-family:Arial,Segoe UI,sans-serif}
+header{padding:28px 4vw;background:#14243b;border-bottom:1px solid var(--line)}
+h1{font-size:clamp(22px,3vw,34px);margin:8px 0}
+h2{font-size:19px;margin:0 0 14px}
+h3{font-size:14px;margin:0 0 12px;color:#cbd8e8}
+p{line-height:1.55}
+main{max-width:1450px;margin:auto;padding:24px 4vw 60px}
+.grid{display:grid;gap:15px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.two{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+.three{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.panel{background:var(--panel);border:1px solid var(--line);
+ border-radius:12px;padding:18px;min-width:0}
+.section{margin-top:28px}
+.sectionhead{display:flex;align-items:center;justify-content:space-between;
+ gap:10px;flex-wrap:wrap;margin-bottom:13px}
+.label{font-size:12px;color:var(--muted)}
+.value{font-size:25px;font-weight:bold;margin:8px 0}
+.small{font-size:11px;color:var(--muted);line-height:1.6}
+.tag{font-size:10px;padding:4px 8px;border-radius:5px;
+ background:#263a55;color:#b9d7fa}
+.tag.warn{background:#49351e;color:#ffd18b}
+.tag.good{background:#173d35;color:#8ee6c0}
+.note{padding:12px 14px;border-left:3px solid var(--orange);
+ background:#1d2939;color:#c8d4e2;font-size:12px;line-height:1.6}
+.goodnote{padding:12px 14px;border-left:3px solid var(--green);
+ background:#142d2b;color:#c8e9df;font-size:12px;line-height:1.6}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line)}
+th{color:#a9bdd4}
+td{color:#dce5f0}
+button{background:#203b5a;color:white;border:1px solid #45617e;
+ border-radius:7px;padding:9px 13px;cursor:pointer}
+button:hover{background:#2b4e74}
+input,select{background:#0d1727;color:white;border:1px solid #40536d;
+ border-radius:6px;padding:8px;max-width:100%}
+label{display:block;color:var(--muted);font-size:12px;margin-bottom:5px}
+.controls{display:flex;gap:10px;align-items:end;flex-wrap:wrap}
+.control{min-width:145px}
+canvas{max-height:300px;width:100%!important}
+.status{background:#1c2b40;padding:10px;border-radius:7px;
+ color:#c2d5eb;font-size:12px;margin-top:10px}
+input[type=number]{width:100%}
+.forecast{display:grid;grid-template-columns:repeat(4,minmax(80px,1fr));gap:9px}
+footer{border-top:1px solid var(--line);margin-top:35px;padding-top:18px;
+ color:var(--muted);font-size:11px;line-height:1.7}
+a{color:var(--blue)}
+@media(max-width:600px){
+ main{padding:16px}
+ .forecast{grid-template-columns:repeat(2,minmax(80px,1fr))}
+}
+</style>
+</head>
+<body>
+<header>
+ <div class="label">INDONESIA ECONOMIC INTELLIGENCE / HOUSEHOLD LEVEL</div>
+ <h1>Household Cost & Basic Needs Dashboard</h1>
+ <div class="label">Historical policy & price monitoring 2016–2026 | Scenario analysis 2027–2030</div>
+</header>
+
+<main>
+ <div class="note">
+  <b>Data integrity:</b> Dashboard membedakan harga aktual, tarif resmi,
+  perubahan kebijakan, dan asumsi simulasi. Titik data yang belum memiliki
+  sumber terverifikasi tidak dihubungkan menjadi seri historis palsu.
+ </div>
+
+ <section class="section">
+  <div class="sectionhead">
+   <h2>01 — Data Coverage</h2><span class="tag">DATA STATUS</span>
+  </div>
+  <div class="grid kpis">
+   <div class="panel">
+    <div class="label">Electricity policy events</div>
+    <div class="value">2017–2024</div>
+    <div class="small">Titik perubahan dan regulasi yang teridentifikasi</div>
+   </div>
+   <div class="panel">
+    <div class="label">Fuel policy events</div>
+    <div class="value">2016–2019</div>
+    <div class="small">Premium penugasan dan Solar</div>
+   </div>
+   <div class="panel">
+    <div class="label">Food prices</div>
+    <div class="value" id="foodCoverage">Belum dimuat</div>
+    <div class="small">CSV harga pangan per pasar dan komoditas</div>
+   </div>
+   <div class="panel">
+    <div class="label">Household expenditure</div>
+    <div class="value">Susenas</div>
+    <div class="small">Pengeluaran dan kuantitas konsumsi</div>
+   </div>
+  </div>
+ </section>
+
+ <section class="section">
+  <div class="sectionhead">
+   <h2>02 — Electricity Tariff History</h2>
+   <span class="tag good">VERIFIED POLICY EVENTS</span>
+  </div>
+  <div class="grid two">
+   <div class="panel">
+    <h3>Tarif rumah tangga 900 VA mampu — 2017</h3>
+    <canvas id="electricChart"></canvas>
+    <p class="small">Rp/kWh, titik penyesuaian tarif. Bukan seri tarif seluruh golongan.</p>
+   </div>
+   <div class="panel">
+    <h3>Riwayat perubahan tarif</h3>
+    <table>
+     <thead><tr><th>Tanggal berlaku</th><th>Tarif</th><th>Keterangan</th></tr></thead>
+     <tbody>
+      <tr><td>Jan 2017</td><td>Rp791/kWh</td><td>Tahap 1</td></tr>
+      <tr><td>Mar 2017</td><td>Rp1.034/kWh</td><td>Tahap 2</td></tr>
+      <tr><td>Mei 2017</td><td>Rp1.352/kWh</td><td>Tahap 3</td></tr>
+     </tbody>
+    </table>
+    <div class="note" style="margin-top:12px">
+     Ini berlaku untuk golongan rumah tangga 900 VA mampu (RTM).
+     Pelanggan 900 VA tidak mampu dan golongan lain memiliki struktur tarif
+     yang berbeda.
+    </div>
+    <p class="small">
+     Regulasi 2024: Permen ESDM No. 7 Tahun 2024 menggantikan Permen ESDM
+     No. 28 Tahun 2016 beserta perubahannya.
+    </p>
+   </div>
+  </div>
+ </section>
+
+ <section class="section">
+  <div class="sectionhead">
+   <h2>03 — Fuel Price Policy History</h2>
+   <span class="tag good">VERIFIED EVENTS</span>
+  </div>
+  <div class="panel">
+   <h3>Harga BBM penugasan — titik historis terpilih</h3>
+   <div class="grid two">
+    <div>
+     <canvas id="fuelChart"></canvas>
+     <p class="small">Rp/liter. Premium di luar wilayah Jamali dan Solar.</p>
+    </div>
+    <div>
+     <table>
+      <thead><tr><th>Periode</th><th>Premium</th><th>Solar</th></tr></thead>
+      <tbody>
+       <tr><td>Jan 2016</td><td>Rp6.950</td><td>Rp5.650</td></tr>
+       <tr><td>Apr 2016</td><td>Rp6.450</td><td>Rp5.150</td></tr>
+       <tr><td>Jul 2017</td><td>Rp6.450</td><td>Rp5.150</td></tr>
+       <tr><td>Okt 2017</td><td>Rp6.450</td><td>Rp5.150</td></tr>
+       <tr><td>2018–2019</td><td colspan="2">ESDM menyatakan tidak berubah</td></tr>
+      </tbody>
+     </table>
+     <div class="note" style="margin-top:12px">
+      Harga Premium di Jawa-Madura-Bali dapat berbeda dari harga Premium
+      penugasan di luar Jamali. Jangan gunakan satu angka untuk mewakili
+      semua wilayah.
+     </div>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="section">
+  <div class="sectionhead">
+   <h2>04 — LPG & Regional Price Exposure</h2>
+   <span class="tag warn">REGIONAL DATA REQUIRED</span>
+  </div>
+  <div class="grid three">
+   <div class="panel">
+    <h3>LPG 3 kg</h3>
+    <div class="value">HET daerah</div>
+    <p class="small">Perlu data HET provinsi/kabupaten dan riwayat perubahannya.</p>
+   </div>
+   <div class="panel">
+    <h3>LPG nonsubsidi</h3>
+    <div class="value">Harga jual</div>
+    <p class="small">Harga tabung dan isi ulang dapat berubah menurut produk dan wilayah.</p>
+   </div>
+   <div class="panel">
+    <h3>Harga aktual konsumen</h3>
+    <div class="value">Harga eceran</div>
+    <p class="small">Perlu dibedakan dari HET dan harga resmi di tingkat agen.</p>
+   </div>
+  </div>
+  <div class="note" style="margin-top:12px">
+   Harga LPG 3 kg tidak boleh dianggap seragam nasional. Dashboard final
+   perlu menyimpan harga berdasarkan lokasi, tanggal, jenis transaksi,
+   dan status penyalur.
+  </div>
+ </section>
+
+
+<section class="section">
+  <div class="sectionhead">
+    <h2>05 — Food Price Database</h2>
+    <span class="tag good">AUTO-LOADED / WORLD BANK</span>
+  </div>
+  <div class="panel">
+    <div class="goodnote">
+      Dataset otomatis dibaca dari <b>fpdb.csv</b> di folder yang sama
+      dengan HTML. Sumber: World Bank Real Time Food Prices — Indonesia.
+    </div>
+    <div class="controls" style="margin-top:15px">
+      <div class="control">
+        <label>Komoditas</label>
+        <select id="fpCommodity"></select>
+      </div>
+      <div class="control">
+        <label>Provinsi</label>
+        <select id="fpProvince"></select>
+      </div>
+      <div class="control">
+        <label>Kabupaten / Kota</label>
+        <select id="fpDistrict"></select>
+      </div>
+      <div class="control">
+        <label>Pasar</label>
+        <select id="fpMarket"></select>
+      </div>
+      <button id="fpReload">Reload CSV</button>
+    </div>
+    <div class="status" id="fpStatus">Memuat fpdb.csv...</div>
+    <div class="grid kpis" style="margin-top:15px">
+      <div class="panel">
+        <div class="label">Observasi</div>
+        <div class="value" id="fpCount">—</div>
+      </div>
+      <div class="panel">
+        <div class="label">Harga terbaru</div>
+        <div class="value" id="fpLatest">—</div>
+      </div>
+      <div class="panel">
+        <div class="label">Perubahan YoY</div>
+        <div class="value" id="fpYoY">—</div>
+      </div>
+      <div class="panel">
+        <div class="label">Periode terakhir</div>
+        <div class="value" id="fpPeriod">—</div>
+      </div>
+    </div>
+    <div class="grid two" style="margin-top:18px">
+      <div>
+        <h3>Historical food prices</h3>
+        <canvas id="foodChart"></canvas>
+      </div>
+      <div>
+        <h3>Data quality</h3>
+        <table>
+          <tbody>
+            <tr><td>Dataset</td><td>World Bank RTFP</td></tr>
+            <tr><td>Harga yang dipakai</td><td>Close estimate (c_)</td></tr>
+            <tr><td>Agregasi</td><td>Rata-rata sederhana observasi pasar</td></tr>
+            <tr><td>Currency</td><td id="fpCurrency">—</td></tr>
+            <tr><td>Wilayah</td><td id="fpGeo">Indonesia</td></tr>
+          </tbody>
+        </table>
+        <p class="small" id="fpInfo">
+          Menunggu pemuatan dataset.
+        </p>
+      </div>
+    </div>
+    <div class="note" style="margin-top:14px">
+      Harga close estimate (c_) merupakan estimasi penutupan dalam dataset,
+      bukan selalu hasil pengamatan langsung. Dataset World Bank menggabungkan
+      pengukuran langsung dan estimasi model. Rata-rata pasar di dashboard ini
+      tidak menggunakan bobot populasi.
+    </div>
+  </div>
+</section>
+
+
+ <section class="section">
+  <div class="sectionhead">
+   <h2>06 — Susenas Household Expenditure</h2>
+   <span class="tag good">OFFICIAL SURVEY FRAMEWORK</span>
+  </div>
+  <div class="panel">
+   <div class="grid two">
+    <div>
+     <h3>Data yang dapat dianalisis</h3>
+     <table>
+      <thead><tr><th>Kelompok</th><th>Informasi</th></tr></thead>
+      <tbody>
+       <tr><td>Pangan</td><td>Pengeluaran dan kuantitas komoditas</td></tr>
+       <tr><td>Listrik</td><td>Pengeluaran dan penggunaan</td></tr>
+       <tr><td>Air dan gas</td><td>Pengeluaran dan kuantitas tertentu</td></tr>
+       <tr><td>BBM</td><td>Pengeluaran dan kuantitas tertentu</td></tr>
+       <tr><td>Nonpangan lainnya</td><td>Pengeluaran menurut kelompok</td></tr>
+      </tbody>
+     </table>
+    </div>
+    <div>
+     <h3>Kontinuitas survei</h3>
+     <p class="small">
+      Susenas konsumsi/pengeluaran dilakukan dua kali setahun pada Maret dan
+      September sejak 2015 sampai 2023. September 2020 tidak mencatat konsumsi
+      karena pandemi, sedangkan September 2023 tidak dilaksanakan.
+     </p>
+     <div class="note">
+      Untuk analisis tren jangka panjang, gunakan periode survei yang
+      sebanding dan perhatikan perubahan desain sampel, kuesioner, serta
+      klasifikasi komoditas.
+     </div>
+     <p class="small">
+      Sumber publikasi:
+      <a href="https://www.bps.go.id/id/publication/2025/05/28/b67b4702334f3123221372ba/consumption-expenditure-of-population-of-indonesia--september-2024.html" target="_blank">Susenas September 2024</a>.
+     </p>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="section">
+  <div class="sectionhead">
+   <h2>07 — Household Cost Simulator</h2>
+   <span class="tag warn">SCENARIO ASSUMPTIONS</span>
+  </div>
+  <div class="panel">
+   <p class="small">
+    Simulasi sederhana dampak kenaikan biaya terhadap pengeluaran rumah tangga.
+    Angka awal dan asumsi pertumbuhan bukan data rata-rata resmi BPS.
+   </p>
+   <div class="grid three">
+    <div><label>Pengeluaran awal per bulan (Rp)</label>
+     <input id="baseCost" type="number" value="5000000"></div>
+    <div><label>Porsi pangan (%)</label>
+     <input id="foodShare" type="number" value="45"></div>
+    <div><label>Porsi energi (%)</label>
+     <input id="energyShare" type="number" value="15"></div>
+   </div>
+   <h3 style="margin-top:20px">Asumsi kenaikan biaya tahunan</h3>
+   <div class="forecast">
+    <div><label>Tahun</label><input disabled value="2027"></div>
+    <div><label>Tahun</label><input disabled value="2028"></div>
+    <div><label>Tahun</label><input disabled value="2029"></div>
+    <div><label>Tahun</label><input disabled value="2030"></div>
+    <div><label>Pangan (%)</label><input id="foodGrowth" type="number" value="6"></div>
+    <div><label>Energi (%)</label><input id="energyGrowth" type="number" value="8"></div>
+    <div><label>Lainnya (%)</label><input id="otherGrowth" type="number" value="4"></div>
+    <div><label>Pendapatan (%)</label><input id="incomeGrowth" type="number" value="3"></div>
+   </div>
+   <div class="controls" style="margin-top:14px">
+    <button id="runSim">Hitung</button>
+    <button id="resetSim">Reset</button>
+   </div>
+   <div class="grid two" style="margin-top:18px">
+    <div>
+     <h3>Proyeksi pengeluaran dan pendapatan</h3>
+     <canvas id="householdChart"></canvas>
+    </div>
+    <div>
+     <h3>Hasil perhitungan</h3>
+     <table>
+      <thead><tr><th>Tahun</th><th>Pengeluaran</th><th>Pendapatan*</th><th>Rasio</th></tr></thead>
+      <tbody id="simTable"></tbody>
+     </table>
+     <div class="status" id="simSummary">Menunggu perhitungan.</div>
+     <p class="small">*Pendapatan awal diasumsikan sama dengan pengeluaran awal.</p>
+    </div>
+   </div>
+  </div>
+ </section>
+
+ <section class="section">
+  <div class="sectionhead">
+   <h2>08 — Source Register</h2>
+   <span class="tag">TRACEABILITY</span>
+  </div>
+  <div class="panel">
+   <table>
+    <thead><tr><th>Data</th><th>Sumber</th><th>Catatan</th></tr></thead>
+    <tbody>
+     <tr>
+      <td>Tarif listrik 2017</td>
+      <td><a href="https://esdm.go.id/id/media-center/news-archives/subsidi-listrik-tetap-diberikan-kepada-masyarakat-tidak-mampu" target="_blank">ESDM</a></td>
+      <td>Penyesuaian 900 VA RTM</td>
+     </tr>
+     <tr>
+      <td>Regulasi tarif listrik</td>
+      <td><a href="https://peraturan.bpk.go.id/Details/294347/permen-esdm-no-7-tahun-2024" target="_blank">BPK / Permen ESDM</a></td>
+      <td>Permen ESDM 7/2024</td>
+     </tr>
+     <tr>
+      <td>Harga BBM 2016</td>
+      <td><a href="https://www.esdm.go.id/id/media-center/arsip-berita/penetapan-harga-bbm-berlaku-mulai-5-januari-2016" target="_blank">ESDM</a></td>
+      <td>Penetapan harga Januari 2016</td>
+     </tr>
+     <tr>
+      <td>Harga BBM 2017</td>
+      <td><a href="https://www.esdm.go.id/id/media-center/arsip-berita/harga-bbm-mulai-1-juli-2017-tidak-naik" target="_blank">ESDM</a></td>
+      <td>Premium dan Solar penugasan</td>
+     </tr>
+     <tr>
+      <td>Harga pangan</td>
+      <td><a href="https://microdata.worldbank.org/catalog/6166/data-api" target="_blank">World Bank RTFP</a></td>
+      <td>Impor CSV untuk analisis harga</td>
+     </tr>
+     <tr>
+      <td>Pengeluaran Susenas</td>
+      <td><a href="https://www.bps.go.id/" target="_blank">BPS</a></td>
+      <td>Pengeluaran dan kuantitas konsumsi</td>
+     </tr>
+     <tr>
+      <td>Pengeluaran September 2024</td>
+      <td><a href="https://www.bps.go.id/id/publication/2025/05/28/b67b4702334f3123221372ba/consumption-expenditure-of-population-of-indonesia--september-2024.html" target="_blank">BPS</a></td>
+      <td>Publikasi Susenas</td>
+     </tr>
+     <tr>
+      <td>LPG 3 kg</td>
+      <td><a href="https://www.migas.esdm.go.id/daftar-sub-penyalur-lpg-3-kg" target="_blank">Ditjen Migas</a></td>
+      <td>Data subpenyalur per provinsi</td>
+     </tr>
+    </tbody>
+   </table>
+  </div>
+ </section>
+
+ <footer>
+  <b>INDONESIA HOUSEHOLD COST & BASIC NEEDS DASHBOARD — V3</b><br>
+  Historical policy events, price data import, household exposure and scenario simulation.<br>
+  Historical observations, policy announcements and scenario assumptions are
+  intentionally separated. This is an independent analytical dashboard, not
+  an official government publication.<br>
+  <span id="updated"></span>
+ </footer>
+</main>
+
+<script>
+const fmt=n=>new Intl.NumberFormat('id-ID',{maximumFractionDigits:0}).format(n);
+const charts={};
+
+function chart(id,type,labels,datasets,extra={}){
+ const canvas = document.getElementById(id);
+ if (!canvas) { console.error('[Dashboard] Canvas not found:', id); return; }
+ if (typeof Chart === 'undefined') { console.error('[Dashboard] Chart.js failed to load.'); return; }
+ if(charts[id])charts[id].destroy();
+ charts[id]=new Chart(canvas,{
+  type,data:{labels,datasets},
+  options:{
+   responsive:true,maintainAspectRatio:true,
+   interaction:{mode:'index',intersect:false},
+   plugins:{legend:{labels:{color:'#cbd8e8'}}},
+   scales:{
+    x:{ticks:{color:'#91a1b7'},grid:{color:'#293950'}},
+    y:{ticks:{color:'#91a1b7'},grid:{color:'#293950'}}
+   },...extra
+  }
+ });
+}
+
+// Verified tariff events: 900 VA RTM, 2017.
+chart('electricChart','line',
+ ['Jan 2017','Mar 2017','Mei 2017'],
+ [{label:'Tarif Rp/kWh',data:[791,1034,1352],
+   borderColor:'#58a6ff',backgroundColor:'#58a6ff',tension:.15}]);
+
+// Verified policy price points: Premium assignment and Solar.
+// Premium refers to the non-Jamali assignment price.
+chart('fuelChart','line',
+ ['Jan 2016','Apr 2016','Jul 2017','Okt 2017'],
+ [
+  {label:'Premium penugasan',data:[6950,6450,6450,6450],
+   borderColor:'#ffb454',backgroundColor:'#ffb454',tension:0},
+  {label:'Solar',data:[5650,5150,5150,5150],
+   borderColor:'#50d6d0',backgroundColor:'#50d6d0',tension:0}
+ ]);
+
+/* Legacy manual CSV uploader removed.
+   Food data is loaded only by fpLoadDatabase() from ./fpdb.csv.
+*/
+
+/* ==========================================================
+   WORLD BANK FOOD PRICE DATABASE
+   File: ./fpdb.csv
+   Source: Indonesia RTFP, World Bank
+   ========================================================== */
+
+let fpRows = [];
+let fpHeaders = [];
+let fpChart = null;
+
+const fpFmt = n => new Intl.NumberFormat('id-ID',{
+  maximumFractionDigits: 0
+}).format(n);
+
+
+function fpParseCSV(text) {
+  // Remove UTF-8 BOM if present.
+  if (text.charCodeAt(0) === 0xFEFF) {
+    text = text.slice(1);
+  }
+
+  // Split lines without regular expressions.
+  const lines = text
+    .split('\n')
+    .map(line => line.endsWith('\r') ? line.slice(0, -1) : line)
+    .filter(line => line.trim().length > 0);
+
+  if (!lines.length) return [];
+
+  function parseLine(line) {
+    const out = [];
+    let value = '';
+    let quoted = false;
+
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+
+      if (c === '"' && line[i + 1] === '"' && quoted) {
+        value += '"';
+        i++;
+      } else if (c === '"') {
+        quoted = !quoted;
+      } else if (c === ',' && !quoted) {
+        out.push(value);
+        value = '';
+      } else {
+        value += c;
+      }
+    }
+
+    out.push(value);
+    return out;
+  }
+
+  const headers = parseLine(lines[0]).map(x => x.trim());
+
+  return lines.slice(1).map(line => {
+    const values = parseLine(line);
+    const row = {};
+
+    headers.forEach((header, index) => {
+      row[header] = values[index] ?? '';
+    });
+
+    return row;
+  });
+}
+
+
+function fpNumber(value) {
+  if (value === null || value === undefined || value === '') return NaN;
+  const n = Number(String(value).trim().replace(/,/g, ''));
+  return Number.isFinite(n) ? n : NaN;
+}
+
+function fpSetOptions(id, values, firstLabel) {
+  const el = document.getElementById(id);
+  const oldValue = el.value;
+
+  el.innerHTML = '';
+
+  if (firstLabel) {
+    const opt = document.createElement('option');
+    opt.value = '*';
+    opt.textContent = firstLabel;
+    el.appendChild(opt);
+  }
+
+  [...new Set(values.filter(v => v && String(v).trim()))]
+    .sort((a, b) => String(a).localeCompare(String(b)))
+    .forEach(value => {
+      const opt = document.createElement('option');
+      opt.value = value;
+      opt.textContent = value;
+      el.appendChild(opt);
+    });
+
+  if ([...el.options].some(o => o.value === oldValue)) {
+    el.value = oldValue;
+  }
+}
+
+function fpSetStatus(message) {
+  document.getElementById('fpStatus').textContent = message;
+}
+
+async function fpLoadDatabase() {
+  fpSetStatus('Mengunduh dan membaca fpdb.csv...');
+
+  try {
+    const response = await fetch(new URL('./fpdb.csv', window.location.href), {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error('HTTP ' + response.status);
+    }
+
+    const csv = await response.text();
+    fpRows = fpParseCSV(csv);
+
+    if (!fpRows.length) {
+      throw new Error('CSV kosong atau format tidak dikenali.');
+    }
+
+    fpHeaders = Object.keys(fpRows[0]);
+
+    const required = [
+      'price_date', 'adm1_name', 'adm2_name', 'mkt_name'
+    ];
+
+    const missing = required.filter(x => !fpHeaders.includes(x));
+
+    if (missing.length) {
+      throw new Error('Kolom wajib tidak ditemukan: ' + missing.join(', '));
+    }
+
+    const commodities = fpHeaders
+      .filter(x => x.startsWith('c_'))
+      .filter(x => fpRows.some(r => Number.isFinite(fpNumber(r[x]))))
+      .map(x => x.substring(2));
+
+    if (!commodities.length) {
+      throw new Error('Kolom close estimate (c_) tidak ditemukan.');
+    }
+
+    fpSetOptions('fpCommodity', commodities);
+    fpSetOptions(
+      'fpProvince',
+      fpRows.map(r => r.adm1_name),
+      'Semua provinsi'
+    );
+
+    fpUpdateDistricts();
+    fpUpdateMarkets();
+
+    document.getElementById('fpCount').textContent =
+      fpRows.length.toLocaleString('id-ID');
+
+    fpSetStatus(
+      'Berhasil memuat ' + fpRows.length.toLocaleString('id-ID') +
+      ' observasi dari fpdb.csv.'
+    );
+
+    fpRenderChart();
+
+  } catch (error) {
+    fpSetStatus(
+      'Gagal memuat database: ' + error.message +
+      '. Pastikan fpdb.csv ada di folder yang sama dan ikut disajikan oleh preview localhost Firefox. URL yang dicoba: ' + new URL('./fpdb.csv', window.location.href).href
+    );
+  }
+}
+
+function fpGetGeoRows() {
+  const province = document.getElementById('fpProvince').value;
+  const district = document.getElementById('fpDistrict').value;
+  const market = document.getElementById('fpMarket').value;
+
+  return fpRows.filter(r =>
+    (province === '*' || r.adm1_name === province) &&
+    (district === '*' || r.adm2_name === district) &&
+    (market === '*' || r.mkt_name === market)
+  );
+}
+
+function fpUpdateDistricts() {
+  const province = document.getElementById('fpProvince').value;
+
+  const rows = fpRows.filter(r =>
+    province === '*' || r.adm1_name === province
+  );
+
+  fpSetOptions(
+    'fpDistrict',
+    rows.map(r => r.adm2_name),
+    'Semua kabupaten/kota'
+  );
+
+  fpUpdateMarkets();
+}
+
+function fpUpdateMarkets() {
+  const province = document.getElementById('fpProvince').value;
+  const district = document.getElementById('fpDistrict').value;
+
+  const rows = fpRows.filter(r =>
+    (province === '*' || r.adm1_name === province) &&
+    (district === '*' || r.adm2_name === district)
+  );
+
+  fpSetOptions(
+    'fpMarket',
+    rows.map(r => r.mkt_name),
+    'Semua pasar'
+  );
+}
+
+function fpRenderChart() {
+  if (!fpRows.length) return;
+
+  const commodity = document.getElementById('fpCommodity').value;
+  const column = 'c_' + commodity;
+
+  const selectedRows = fpGetGeoRows();
+  const groups = {};
+
+  selectedRows.forEach(row => {
+    const price = fpNumber(row[column]);
+    if (!Number.isFinite(price)) return;
+
+    const date = String(row.price_date || '').substring(0, 7);
+    if (
+	  date.length !== 7 ||
+	  date[4] !== '-' ||
+	  !Number.isInteger(Number(date.slice(0, 4))) ||
+	  !Number.isInteger(Number(date.slice(5, 7)))
+	) return;
+
+    if (!groups[date]) groups[date] = [];
+    groups[date].push(price);
+  });
+
+  const labels = Object.keys(groups).sort();
+
+  const values = labels.map(month => {
+    const prices = groups[month];
+    return prices.reduce((a, b) => a + b, 0) / prices.length;
+  });
+
+  if (!labels.length) {
+    fpSetStatus('Tidak ada data harga untuk filter yang dipilih.');
+    if (fpChart) {
+      fpChart.destroy();
+      fpChart = null;
+    }
+    return;
+  }
+
+  if (fpChart) fpChart.destroy();
+
+  fpChart = new Chart(document.getElementById('foodChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: commodity + ' — close estimate',
+        data: values,
+        borderColor: '#50d6d0',
+        backgroundColor: '#50d6d0',
+        borderWidth: 2,
+        pointRadius: 0,
+        tension: 0.2
+      }]
+    },
+    options: {
+      responsive: true,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { labels: { color: '#cbd8e8' } },
+        tooltip: {
+          callbacks: {
+            label: ctx => 'Harga: ' + fpFmt(ctx.raw)
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#91a1b7', maxTicksLimit: 12 },
+          grid: { color: '#293950' }
+        },
+        y: {
+          ticks: { color: '#91a1b7' },
+          grid: { color: '#293950' }
+        }
+      }
+    }
+  });
+
+  const latest = values[values.length - 1];
+  const latestMonth = labels[labels.length - 1];
+
+  const previousYearMonth =
+    (Number(latestMonth.substring(0, 4)) - 1) +
+    latestMonth.substring(4);
+
+  const previousIndex = labels.indexOf(previousYearMonth);
+
+  const yoy = previousIndex >= 0
+    ? ((latest / values[previousIndex]) - 1) * 100
+    : null;
+
+  document.getElementById('fpLatest').textContent = fpFmt(latest);
+  document.getElementById('fpYoY').textContent =
+    yoy === null ? '—' : yoy.toFixed(1) + '%';
+
+  document.getElementById('fpPeriod').textContent = latestMonth;
+  document.getElementById('fpCount').textContent =
+    selectedRows.filter(r => Number.isFinite(fpNumber(r[column])))
+      .length.toLocaleString('id-ID');
+
+  const currency = [...new Set(
+    selectedRows.map(r => r.currency).filter(Boolean)
+  )];
+
+  document.getElementById('fpCurrency').textContent =
+    currency.join(', ') || '—';
+
+  const province = document.getElementById('fpProvince').value;
+  const district = document.getElementById('fpDistrict').value;
+  const market = document.getElementById('fpMarket').value;
+
+  document.getElementById('fpGeo').textContent =
+    province === '*' ? 'Semua Indonesia' : province;
+
+  document.getElementById('fpInfo').textContent =
+    'Komoditas: ' + commodity +
+    '. Periode: ' + labels[0] + ' sampai ' + latestMonth +
+    '. Kabupaten: ' + (district === '*' ? 'Semua' : district) +
+    '. Pasar: ' + (market === '*' ? 'Semua' : market) +
+    '. Rata-rata sederhana dari harga pasar yang tersedia.';
+
+  fpSetStatus(
+    'Database aktif. ' + labels.length +
+    ' bulan harga tersedia untuk filter saat ini.'
+  );
+}
+
+
+function fpInitialize() {
+  const requiredIds = [
+    'fpCommodity',
+    'fpProvince',
+    'fpDistrict',
+    'fpMarket',
+    'fpReload',
+    'fpStatus',
+    'fpCount',
+    'fpLatest',
+    'fpYoY',
+    'fpPeriod',
+    'fpCurrency',
+    'fpGeo',
+    'fpInfo',
+    'foodChart'
+  ];
+
+  const missing = requiredIds.filter(
+    id => !document.getElementById(id)
+  );
+
+  if (missing.length) {
+    console.error(
+      '[FPDB] Missing HTML elements:',
+      missing
+    );
+
+    const status = document.getElementById('fpStatus');
+
+    if (status) {
+      status.textContent =
+        'HTML belum lengkap. Elemen tidak ditemukan: ' +
+        missing.join(', ');
+    }
+
+    return;
+  }
+
+  document.getElementById('fpProvince')
+    .addEventListener('change', fpUpdateDistricts);
+
+  document.getElementById('fpDistrict')
+    .addEventListener('change', fpUpdateMarkets);
+
+  document.getElementById('fpCommodity')
+    .addEventListener('change', fpRenderChart);
+
+  document.getElementById('fpMarket')
+    .addEventListener('change', fpRenderChart);
+
+  document.getElementById('fpReload')
+    .addEventListener('click', fpLoadDatabase);
+
+  fpLoadDatabase();
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener(
+    'DOMContentLoaded',
+    fpInitialize,
+    { once: true }
+  );
+} else {
+  fpInitialize();
+}
+
+
+// Household simulator.
+let householdChart;
+function simulate(){
+ const base=Number(document.getElementById('baseCost').value);
+ const fs=Number(document.getElementById('foodShare').value)/100;
+ const es=Number(document.getElementById('energyShare').value)/100;
+ const fg=Number(document.getElementById('foodGrowth').value)/100;
+ const eg=Number(document.getElementById('energyGrowth').value)/100;
+ const og=Number(document.getElementById('otherGrowth').value)/100;
+ const ig=Number(document.getElementById('incomeGrowth').value)/100;
+ if(!(base>0)||fs<0||es<0||fs+es>1){
+  alert('Periksa pengeluaran dan porsi anggaran.');return;
+ }
+ let food=base*fs,energy=base*es,other=base*(1-fs-es),income=base;
+ const data=[{year:2026,cost:base,income:base}];
+ for(let y=2027;y<=2030;y++){
+  food*=1+fg;energy*=1+eg;other*=1+og;income*=1+ig;
+  data.push({year:y,cost:food+energy+other,income});
+ }
+ document.getElementById('simTable').innerHTML=data.map(r=>
+  `<tr><td>${r.year}</td><td>Rp ${fmt(r.cost)}</td><td>Rp ${fmt(r.income)}</td><td>${(r.cost/r.income*100).toFixed(1)}%</td></tr>`
+ ).join('');
+ if(householdChart)householdChart.destroy();
+ householdChart=new Chart(document.getElementById('householdChart'),{
+  type:'line',
+  data:{labels:data.map(r=>r.year),datasets:[
+   {label:'Pengeluaran',data:data.map(r=>r.cost),
+    borderColor:'#ffb454',backgroundColor:'#ffb454',tension:.2},
+   {label:'Pendapatan',data:data.map(r=>r.income),
+    borderColor:'#58a6ff',backgroundColor:'#58a6ff',tension:.2}
+  ]},
+  options:{responsive:true,plugins:{legend:{labels:{color:'#cbd8e8'}}},
+   scales:{x:{ticks:{color:'#91a1b7'},grid:{color:'#293950'}},
+   y:{ticks:{color:'#91a1b7',callback:v=>'Rp '+fmt(v)},grid:{color:'#293950'}}}}
+ });
+ const end=data.at(-1);
+ document.getElementById('simSummary').textContent=
+  `Pengeluaran 2030 Rp ${fmt(end.cost)}; perubahan dari 2026 ${((end.cost/base-1)*100).toFixed(1)}%. Rasio pengeluaran terhadap pendapatan ${(end.cost/end.income*100).toFixed(1)}%.`;
+}
+document.getElementById('runSim').addEventListener('click',simulate);
+document.getElementById('resetSim').addEventListener('click',()=>{
+ document.getElementById('baseCost').value=5000000;
+ document.getElementById('foodShare').value=45;
+ document.getElementById('energyShare').value=15;
+ document.getElementById('foodGrowth').value=6;
+ document.getElementById('energyGrowth').value=8;
+ document.getElementById('otherGrowth').value=4;
+ document.getElementById('incomeGrowth').value=3;
+ simulate();
+});
+document.getElementById('updated').textContent=
+ 'Generated: '+new Date().toLocaleString('id-ID');
+simulate();
+</script>
+</body>
+</html>

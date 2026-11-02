@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Portal analisis risiko ekonomi Indonesia dan dampaknya terhadap biaya hidup rumah tangga, 2016–2030.">
+<title>Indonesia Economic Intelligence | Overview</title>
+<style>
+:root{
+  --bg:#09111f;--bg2:#0e1a2b;--panel:#132238;--panel2:#182a42;
+  --line:#2a3d58;--text:#e8eff8;--muted:#9aabc1;--blue:#65adff;
+  --cyan:#55d4d0;--amber:#ffbd69;--red:#ff7d82;--green:#70d9ac;
+  --shadow:0 14px 36px rgba(0,0,0,.22)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:linear-gradient(180deg,#0d1b2d 0,#09111f 420px);color:var(--text);font-family:Inter,Segoe UI,Arial,sans-serif;line-height:1.6}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{width:min(1200px,92vw);margin:auto}
+header{padding:28px 0 54px;border-bottom:1px solid var(--line);background:radial-gradient(ellipse at 82% 5%,rgba(58,126,190,.22),transparent 38%)}
+.topline{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;color:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:#d8e8fa}
+.mark{width:10px;height:10px;background:var(--cyan);border-radius:3px;box-shadow:0 0 18px rgba(85,212,208,.5)}
+.hero{max-width:900px;padding-top:54px}
+.eyebrow{color:var(--cyan);font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+h1{font-size:clamp(32px,5vw,56px);line-height:1.08;letter-spacing:-.035em;margin:13px 0 18px}
+.hero p{max-width:780px;color:#bac9db;font-size:16px;margin:0}
+.meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:24px}
+.pill{border:1px solid #38506d;border-radius:99px;padding:6px 11px;font-size:11px;color:#c2d4e8;background:rgba(18,35,56,.65)}
+main{padding:30px 0 70px}
+section{margin-top:35px;scroll-margin-top:20px}
+.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap;margin-bottom:15px}
+.kicker{font-size:11px;color:var(--cyan);font-weight:700;letter-spacing:.13em;text-transform:uppercase}
+h2{font-size:22px;line-height:1.25;margin:4px 0 0;letter-spacing:-.02em}
+h3{font-size:15px;margin:0 0 9px}
+.muted{color:var(--muted)}
+.small{font-size:12px;color:var(--muted)}
+.grid{display:grid;gap:14px}
+.cards4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.cards3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.cards2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.card{background:linear-gradient(160deg,rgba(24,42,66,.96),rgba(15,29,48,.96));border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);min-width:0}
+.card p{margin:7px 0 0;color:#b4c3d6;font-size:13px}
+.stat{font-size:25px;font-weight:750;letter-spacing:-.03em;margin:8px 0 2px}
+.statlabel{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.dashgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.dashcard{position:relative;overflow:hidden;min-height:225px;padding:24px;border-radius:16px;border:1px solid #38516e;background:linear-gradient(135deg,#183454,#122238 65%,#102035);box-shadow:var(--shadow)}
+.dashcard.micro{background:linear-gradient(135deg,#164047,#122b3a 65%,#102035)}
+.dashcard:after{content:"";position:absolute;width:200px;height:200px;border:1px solid rgba(255,255,255,.08);border-radius:50%;right:-45px;top:-65px;box-shadow:0 0 0 24px rgba(255,255,255,.025),0 0 0 50px rgba(255,255,255,.018)}
+.dashcard>*{position:relative;z-index:1}
+.dashnum{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:#a9c8e8}
+.dashcard h3{font-size:22px;margin:13px 0 8px;max-width:380px}
+.dashcard p{font-size:13px;color:#c0cedd;max-width:440px;margin:0 0 22px}
+.openlink{display:inline-flex;align-items:center;gap:9px;padding:10px 14px;border:1px solid #7396ba;border-radius:8px;background:rgba(7,17,30,.4);color:white;font-size:13px;font-weight:700}
+.openlink:hover{background:rgba(101,173,255,.18);text-decoration:none}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;align-items:stretch}
+.flowitem{border:1px solid var(--line);background:var(--panel);border-radius:11px;padding:13px;position:relative}
+.flowitem:not(:last-child):after{content:"›";position:absolute;right:-9px;top:38%;z-index:2;background:var(--bg);color:var(--cyan);font-size:21px;line-height:1}
+.flowitem b{display:block;font-size:13px;margin-bottom:5px}
+.flowitem span{font-size:11px;color:var(--muted)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+table{width:100%;border-collapse:collapse;min-width:680px;font-size:12px}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:#aec2da;background:#172941;font-weight:650}
+td{color:#dce6f1}
+tr:last-child td{border-bottom:0}
+.badge{display:inline-block;padding:3px 7px;border-radius:5px;font-size:10px;font-weight:700;background:#253c58;color:#bdd8f6}
+.badge.amber{background:#47371f;color:#ffd18b}
+.badge.green{background:#173d36;color:#92e5c5}
+.badge.red{background:#46292f;color:#ffadb1}
+.note{border-left:3px solid var(--amber);background:#1b293a;padding:13px 15px;border-radius:0 9px 9px 0;color:#c6d2e1;font-size:12px;line-height:1.65}
+.note.green{border-left-color:var(--green);background:#142d2b}
+.list{margin:8px 0 0;padding-left:18px;color:#bdcadd;font-size:13px}
+.list li{margin:6px 0}
+.tagrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.tag{font-size:10px;color:#c1d4e8;border:1px solid #354c68;border-radius:6px;padding:4px 7px}
+.timeline{display:grid;gap:0;margin-top:8px}
+.timeitem{display:grid;grid-template-columns:115px 1fr;gap:15px;padding:13px 0;border-bottom:1px solid var(--line)}
+.timeitem:last-child{border:0}
+.timeitem b{font-size:12px;color:var(--cyan)}
+.timeitem div{font-size:13px;color:#c0cede}
+.sources a{display:inline-block;margin:4px 8px 4px 0;font-size:12px}
+footer{border-top:1px solid var(--line);padding:25px 0 38px;color:var(--muted);font-size:11px}
+.nav{display:flex;gap:13px;flex-wrap:wrap;margin-top:22px}
+.nav a{font-size:12px;color:#c2d4e8}
+@media(max-width:900px){.cards4{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:repeat(3,1fr)}.flowitem:nth-child(3):after{display:none}}
+@media(max-width:650px){.dashgrid,.cards2,.cards3{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.flowitem:after{display:none!important}.timeitem{grid-template-columns:1fr;gap:3px}.hero{padding-top:36px}.cards4{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="topline">
+   <div class="brand"><span class="mark"></span> Indonesia Economic Intelligence</div>
+   <div>Analytical workspace · Updated 03 November 2026</div>
+  </div>
+  <div class="hero">
+   <div class="eyebrow">Macroeconomic risk → household impact</div>
+   <h1>Indonesia Economic Risk<br>& Cost of Living Monitor</h1>
+   <p>Portal ringkasan untuk memantau bagaimana guncangan geopolitik, energi, perdagangan, fiskal, dan kondisi eksternal dapat merambat ke ekonomi Indonesia—hingga harga kebutuhan pokok dan daya beli rumah tangga.</p>
+   <div class="meta">
+    <span class="pill">Historical framework: 2016–2026</span>
+    <span class="pill">Scenario horizon: 2027–2030</span>
+    <span class="pill">Macro + micro analysis</span>
+    <span class="pill">Independent analytical workspace</span>
+   </div>
+   <nav class="nav">
+    <a href="#dashboards">Dashboards</a><a href="#context">Risk context</a><a href="#macro">Macro framework</a><a href="#micro">Household impact</a><a href="#data">Data & methodology</a><a href="#scenarios">Scenarios</a>
+   </nav>
+  </div>
+ </div>
+</header>
+
+<main class="wrap">
+ <section id="dashboards">
+  <div class="sectionhead">
+   <div><div class="kicker">01 · Main workspaces</div><h2>Buka dashboard analisis</h2></div>
+   <span class="small">Dua file HTML berada di folder yang sama dengan landing page ini.</span>
+  </div>
+  <div class="dashgrid">
+   <article class="dashcard">
+    <div class="dashnum">Workspace 01 · Macroeconomics</div>
+    <h3>Indonesia Economic Risk Dashboard</h3>
+    <p>Pemantauan risiko makro Indonesia: geopolitik dan pertahanan, energi, perdagangan, fiskal, rupiah dan cadangan devisa, pertumbuhan dan inflasi. Termasuk kerangka stress test 2027–2030.</p>
+    <a class="openlink" href="dashboard.html">Buka dashboard <span aria-hidden="true">↗</span></a>
+   </article>
+   <article class="dashcard micro">
+    <div class="dashnum">Workspace 02 · Household economy</div>
+    <h3>Household Cost & Basic Needs Dashboard</h3>
+    <p>Analisis harga pangan, tarif listrik, BBM, LPG, pengeluaran rumah tangga, Susenas, dan simulasi tekanan biaya hidup. Mendukung pemuatan lokal database harga pangan FPDB.</p>
+    <a class="openlink" href="dashboard-mikro.html">Buka dashboard <span aria-hidden="true">↗</span></a>
+   </article>
+  </div>
+ </section>
+
+ <section id="context">
+  <div class="sectionhead"><div><div class="kicker">02 · Strategic context</div><h2>Latar belakang dan hipotesis risiko</h2></div></div>
+  <div class="grid cards2">
+   <article class="card">
+    <h3>Geopolitik dan energi global</h3>
+    <p>Diskusi berangkat dari eskalasi konflik AS–Israel–Iran dan risiko gangguan pasokan energi serta jalur perdagangan di Timur Tengah. Fokus analisis bukan menebak keputusan politik, melainkan menilai konsekuensi ekonomi dari durasi konflik, perubahan sasaran, biaya perang, ketahanan lawan, serta dampak lanjutan terhadap pasar energi dan logistik.</p>
+   </article>
+   <article class="card">
+    <h3>Perubahan konfigurasi kekuatan</h3>
+    <p>CRINK (China, Russia, Iran, North Korea), sanksi, perang dagang, dan diversifikasi kemitraan dibahas sebagai bagian dari dinamika tatanan internasional. Hipotesis kerja: negara-negara dapat melakukan hedging dan mengurangi ketergantungan pada satu pusat kekuatan ketika risiko penggunaan instrumen ekonomi meningkat.</p>
+   </article>
+  </div>
+  <div class="note" style="margin-top:14px">Kerangka ini merupakan konteks geopolitik dan hipotesis analitis yang dibahas, bukan kesimpulan bahwa suatu blok telah sepenuhnya terintegrasi atau bahwa perubahan dominasi global pada tahun tertentu pasti terjadi. Risiko nuklir juga diperlakukan sebagai isu eskalasi strategis yang perlu dipantau, bukan sebagai prediksi penggunaan senjata nuklir.</div>
+  <div class="sectionhead" style="margin-top:24px"><div><div class="kicker">Transmission mechanism</div><h2>Bagaimana risiko global sampai ke rumah tangga Indonesia?</h2></div></div>
+  <div class="flow">
+   <div class="flowitem"><b>Geopolitical shock</b><span>Konflik, sanksi, gangguan jalur energi, ketidakpastian.</span></div>
+   <div class="flowitem"><b>Global markets</b><span>Minyak, gas, pangan, freight, asuransi, dan biaya pembiayaan.</span></div>
+   <div class="flowitem"><b>Indonesia macro</b><span>Impor, neraca perdagangan, rupiah, cadangan devisa, APBN.</span></div>
+   <div class="flowitem"><b>Domestic prices</b><span>BBM, LPG, listrik, transportasi, distribusi, pangan.</span></div>
+   <div class="flowitem"><b>Household welfare</b><span>Pengeluaran, pendapatan riil, konsumsi, dan daya beli.</span></div>
+  </div>
+ </section>
+
+ <section id="macro">
+  <div class="sectionhead"><div><div class="kicker">03 · Macro risk framework</div><h2>Enam kelompok indikator makro</h2></div></div>
+  <div class="grid cards3">
+   <article class="card"><h3>01 · Geopolitik & pertahanan</h3><p>Ketegangan regional, risiko keamanan, kebutuhan belanja pertahanan, dan potensi trade-off fiskal.</p></article>
+   <article class="card"><h3>02 · Energi</h3><p>ICP/minyak mentah, impor minyak dan LPG, subsidi dan kompensasi energi, serta risiko pasokan.</p></article>
+   <article class="card"><h3>03 · Perdagangan</h3><p>Neraca barang, neraca migas, biaya impor, ketergantungan komoditas, dan ketahanan eksternal.</p></article>
+   <article class="card"><h3>04 · Fiskal</h3><p>Defisit APBN, utang pemerintah, subsidi, kompensasi, dan ruang fiskal untuk meredam shock.</p></article>
+   <article class="card"><h3>05 · Kondisi eksternal</h3><p>Nilai tukar rupiah, cadangan devisa, arus modal, biaya pendanaan, dan tekanan dolar AS.</p></article>
+   <article class="card"><h3>06 · Ekonomi riil</h3><p>Pertumbuhan PDB, inflasi, konsumsi, aktivitas ekonomi, dan dampaknya terhadap kesejahteraan.</p></article>
+  </div>
+ </section>
+
+ <section id="scenarios">
+  <div class="sectionhead"><div><div class="kicker">04 · Macro stress test</div><h2>Lintasan skenario makro 2027–2030</h2></div><span class="badge amber">Asumsi stress test, bukan forecast resmi</span></div>
+  <p class="muted" style="font-size:13px;margin-top:-4px">Angka di bawah merangkum lintasan worst-case yang digunakan dalam rancangan awal dashboard makro. Angka bersifat kondisional untuk menguji ketahanan, bukan prediksi yang dipastikan terjadi.</p>
+  <div class="tablewrap">
+   <table>
+    <thead><tr><th>Indikator</th><th>Satuan</th><th>2027</th><th>2028</th><th>2029</th><th>2030</th></tr></thead>
+    <tbody>
+     <tr><td>Belanja pertahanan</td><td>% PDB</td><td>1.15</td><td>1.30</td><td>1.50</td><td>1.70</td></tr>
+     <tr><td>ICP</td><td>US$/barel</td><td>105</td><td>120</td><td>125</td><td>110</td></tr>
+     <tr><td>Neraca perdagangan migas</td><td>US$ miliar</td><td>-25</td><td>-27</td><td>-30</td><td>-27</td></tr>
+     <tr><td>Neraca perdagangan barang</td><td>US$ miliar</td><td>+8</td><td>-5</td><td>-18</td><td>-10</td></tr>
+     <tr><td>Utang pemerintah (lintasan skenario)</td><td>% PDB</td><td>43.5</td><td>46.2</td><td>49.0</td><td>51.5</td></tr>
+     <tr><td>Defisit APBN</td><td>% PDB</td><td>2.9</td><td>3.0</td><td>3.0</td><td>2.8</td></tr>
+     <tr><td>Nilai tukar USD/IDR</td><td>Rp per US$</td><td>19,000</td><td>21,500</td><td>24,000</td><td>26,000</td></tr>
+     <tr><td>Cadangan devisa</td><td>US$ miliar</td><td>135</td><td>120</td><td>105</td><td>95</td></tr>
+     <tr><td>Pertumbuhan PDB riil</td><td>%</td><td>3.8</td><td>2.0</td><td>-1.5</td><td>0.5</td></tr>
+     <tr><td>Inflasi CPI</td><td>%</td><td>5.0</td><td>7.5</td><td>9.0</td><td>6.5</td></tr>
+    </tbody>
+   </table>
+  </div>
+  <div class="note" style="margin-top:13px">Stress test ini mengasumsikan shock energi, perdagangan, fiskal, dan eksternal yang berat dan berlangsung lebih dari satu periode. Nilai tiap indikator harus dibaca sebagai paket asumsi yang saling terkait. Sebelum dipakai untuk keputusan, perlu diuji ulang dengan data APBN, BI, BPS, Kemenkeu, dan ESDM yang telah diverifikasi.</div>
+ </section>
+
+ <section id="micro">
+  <div class="sectionhead"><div><div class="kicker">05 · Household economy</div><h2>Transmisi ke biaya hidup dan kebutuhan dasar</h2></div></div>
+  <div class="grid cards3">
+   <article class="card"><h3>Pangan</h3><p>Beras, minyak goreng, gula, telur, ayam, cabai, bawang, dan komoditas yang tercakup dalam seri harga pasar.</p><div class="tagrow"><span class="tag">Rp/kg</span><span class="tag">Rp/liter</span><span class="tag">Harga pasar</span></div></article>
+   <article class="card"><h3>Listrik</h3><p>Tarif per golongan daya, kelompok subsidi/nonsubsidi, tanggal penyesuaian, dan estimasi biaya berdasarkan pemakaian kWh.</p><div class="tagrow"><span class="tag">VA class</span><span class="tag">Rp/kWh</span></div></article>
+   <article class="card"><h3>BBM & transportasi</h3><p>Premium historis, Solar, Pertalite, Pertamax, dan jenis BBM lain; perlu pemisahan harga wilayah dan tanggal berlaku.</p><div class="tagrow"><span class="tag">Rp/liter</span><span class="tag">Regional</span></div></article>
+   <article class="card"><h3>LPG</h3><p>LPG 3 kg bersubsidi, HET daerah, harga eceran aktual, serta produk LPG nonsubsidi. Ketiganya tidak boleh dianggap identik.</p><div class="tagrow"><span class="tag">Rp/tabung</span><span class="tag">HET</span></div></article>
+   <article class="card"><h3>Perumahan, kesehatan & pendidikan</h3><p>Biaya kebutuhan nonpangan untuk menangkap tekanan di luar pangan dan energi.</p><div class="tagrow"><span class="tag">Pengeluaran</span><span class="tag">Indeks harga</span></div></article>
+   <article class="card"><h3>Susenas & daya beli</h3><p>Komposisi pengeluaran dan kuantitas konsumsi untuk mengukur exposure rumah tangga. Profil simulasi tidak boleh disamakan dengan rata-rata resmi atau desil BPS.</p><div class="tagrow"><span class="tag">Per kapita</span><span class="tag">Kuantitas</span></div></article>
+  </div>
+  <div class="sectionhead" style="margin-top:23px"><div><div class="kicker">Household stress assumptions</div><h2>Contoh lintasan tekanan biaya</h2></div><span class="badge amber">Skenario ilustratif</span></div>
+  <div class="grid cards2">
+   <article class="card">
+    <h3>Inflasi rumah tangga dalam stress path</h3>
+    <div class="grid cards4" style="gap:8px;margin-top:12px">
+     <div><div class="statlabel">2027</div><div class="stat">5.0%</div></div>
+     <div><div class="statlabel">2028</div><div class="stat">7.5%</div></div>
+     <div><div class="statlabel">2029</div><div class="stat">9.0%</div></div>
+     <div><div class="statlabel">2030</div><div class="stat">6.5%</div></div>
+    </div>
+    <p>Lintasan ini menghasilkan akumulasi kenaikan tingkat harga sekitar 31% dari akhir 2026 sampai 2030 berdasarkan asumsi majemuk. Ini bukan proyeksi resmi.</p>
+   </article>
+   <article class="card">
+    <h3>Contoh dampak nominal</h3>
+    <div class="tablewrap" style="margin-top:8px">
+     <table style="min-width:0">
+      <thead><tr><th>Pengeluaran awal/bulan</th><th>Setelah ±31%</th></tr></thead>
+      <tbody><tr><td>Rp3 juta</td><td>±Rp3,93 juta</td></tr><tr><td>Rp5 juta</td><td>±Rp6,55 juta</td></tr><tr><td>Rp8 juta</td><td>±Rp10,48 juta</td></tr></tbody>
+     </table>
+    </div>
+    <p>Contoh ini hanya menerapkan kenaikan indeks agregat ke pengeluaran awal, bukan menghitung perubahan kuantitas, substitusi barang, atau perbedaan keranjang konsumsi.</p>
+   </article>
+  </div>
+ </section>
+
+ <section id="data">
+  <div class="sectionhead"><div><div class="kicker">06 · Data infrastructure</div><h2>Sumber data dan status kompilasi</h2></div></div>
+  <div class="tablewrap">
+   <table>
+    <thead><tr><th>Domain</th><th>Sumber utama</th><th>Penggunaan</th><th>Status dalam workspace</th></tr></thead>
+    <tbody>
+     <tr><td>Harga pangan</td><td>World Bank RTFP / BPS / PIHPS / Bapanas</td><td>Harga bulanan menurut komoditas dan pasar</td><td><span class="badge green">FPDB auto-load dirancang</span></td></tr>
+     <tr><td>Listrik</td><td>PLN / ESDM / JDIH</td><td>Tarif per golongan dan tanggal berlaku</td><td><span class="badge amber">Perlu seri historis lengkap</span></td></tr>
+     <tr><td>BBM</td><td>ESDM / Pertamina</td><td>Harga resmi per produk dan wilayah</td><td><span class="badge amber">Perlu kompilasi</span></td></tr>
+     <tr><td>LPG</td><td>ESDM / Pemda / Pertamina</td><td>HET, harga agen dan harga eceran</td><td><span class="badge amber">Perlu data daerah</span></td></tr>
+     <tr><td>Pengeluaran rumah tangga</td><td>BPS Susenas</td><td>Komposisi belanja dan kuantitas konsumsi</td><td><span class="badge amber">Perlu harmonisasi seri</span></td></tr>
+     <tr><td>Makro & fiskal</td><td>BPS / BI / Kemenkeu / ESDM</td><td>PDB, CPI, kurs, cadangan, APBN, perdagangan, energi</td><td><span class="badge amber">Perlu validasi per seri</span></td></tr>
+    </tbody>
+   </table>
+  </div>
+  <div class="grid cards2" style="margin-top:14px">
+   <article class="card">
+    <h3>Food Price Database (FPDB)</h3>
+    <p>Dataset World Bank untuk Indonesia yang dibahas memiliki 53.074 baris observasi dan 88 variabel, mencakup 222 pasar dan periode 2007–1 Oktober 2026 (versi data 5 Oktober 2026). Estimasi menggabungkan pengukuran langsung dan pemodelan untuk data yang hilang; hasil historis dapat direvisi.</p>
+    <div class="tagrow"><span class="tag">IDN RTFP</span><span class="tag">222 markets</span><span class="tag">53,074 cases</span><span class="tag">88 variables</span></div>
+    <p class="small" style="margin-top:12px">Sumber: <a href="https://microdata.worldbank.org/catalog/6166/data-api" target="_blank" rel="noopener">World Bank Data API</a> · <a href="https://microdata.worldbank.org/catalog/6166/data-dictionary" target="_blank" rel="noopener">Data dictionary</a>.</p>
+   </article>
+   <article class="card">
+    <h3>Format lokal yang digunakan</h3>
+    <p>Arsip Indonesia diunduh, diekstrak, lalu dipangkas mulai 2016. File aktif bernama <b>fpdb.csv</b>, sedangkan <b>trim_fpdb.py</b> digunakan untuk memangkas periode dan kolom. Dashboard membaca file dengan path relatif.</p>
+    <div class="tagrow"><span class="tag">fpdb.csv</span><span class="tag">trim_fpdb.py</span><span class="tag">2016–latest</span></div>
+    <p class="small" style="margin-top:12px">Unduhan sumber: <a href="https://microdata.worldbank.org/api/downloads/download/IDN_2021_RTFP_v02_M/360756?filename=IDN_RTFP_mkt_2007_2026-10-05.zip" target="_blank" rel="noopener">Indonesia RTFP ZIP archive</a>.</p>
+   </article>
+  </div>
+  <div class="note green" style="margin-top:14px">Kunci metodologi: bedakan (1) observasi harga, (2) estimasi/model dari dataset, (3) tarif atau harga kebijakan resmi, (4) pengeluaran hasil survei, dan (5) asumsi skenario. Rata-rata sederhana lintas pasar bukan indeks harga nasional berbobot penduduk. Susenas merupakan survei berulang, bukan panel longitudinal rumah tangga yang sama.</div>
+ </section>
+
+ <section id="principles">
+  <div class="sectionhead"><div><div class="kicker">07 · Analytical guardrails</div><h2>Prinsip pembacaan dashboard</h2></div></div>
+  <div class="grid cards3">
+   <article class="card"><h3>Jangan campur historis dan proyeksi</h3><p>Historical actual, official policy events, modeled estimates, dan stress assumptions harus memiliki label yang jelas dan dapat dibedakan.</p></article>
+   <article class="card"><h3>Harga bukan otomatis beban riil</h3><p>Perubahan harga perlu dibaca bersama kuantitas konsumsi, substitusi, pendapatan, dan proporsi pengeluaran rumah tangga.</p></article>
+   <article class="card"><h3>Jangan menyamakan nasional dan lokal</h3><p>Harga pasar, tarif listrik per golongan, HET LPG, serta harga BBM dapat berbeda berdasarkan wilayah dan mekanisme distribusi.</p></article>
+  </div>
+  <div class="timeline">
+   <div class="timeitem"><b>Makro</b><div>Uji guncangan global terhadap energi, perdagangan, fiskal, kurs, cadangan devisa, pertumbuhan dan inflasi.</div></div>
+   <div class="timeitem"><b>Mikro</b><div>Telusuri komoditas dan kebutuhan dasar yang paling cepat meneruskan tekanan biaya kepada konsumen.</div></div>
+   <div class="timeitem"><b>Distribusi</b><div>Bandingkan dampak antarwilayah, jenis pasar, kelas tarif, serta kelompok rumah tangga.</div></div>
+   <div class="timeitem"><b>Validasi</b><div>Perbarui angka dengan sumber primer, catat periode dan definisi, lalu simpan versi dataset agar analisis dapat direproduksi.</div></div>
+  </div>
+ </section>
+
+ <section id="sources">
+  <div class="sectionhead"><div><div class="kicker">08 · Source directory</div><h2>Referensi utama</h2></div></div>
+  <div class="card sources">
+   <a href="https://www.bps.go.id/" target="_blank" rel="noopener">BPS Indonesia</a>
+   <a href="https://www.bi.go.id/" target="_blank" rel="noopener">Bank Indonesia</a>
+   <a href="https://www.kemenkeu.go.id/" target="_blank" rel="noopener">Kementerian Keuangan</a>
+   <a href="https://www.esdm.go.id/" target="_blank" rel="noopener">Kementerian ESDM</a>
+   <a href="https://web.pln.co.id/" target="_blank" rel="noopener">PLN</a>
+   <a href="https://data.badanpangan.go.id/" target="_blank" rel="noopener">Badan Pangan Nasional</a>
+   <a href="https://www.bi.go.id/id/statistik/indikator/ihsg-dan-harga-komoditas/PIHPS/Default.aspx" target="_blank" rel="noopener">BI PIHPS</a>
+   <a href="https://microdata.worldbank.org/catalog/6166/data-api" target="_blank" rel="noopener">World Bank RTFP</a>
+   <a href="https://data.humdata.org/dataset/global-real-time-food-prices" target="_blank" rel="noopener">HDX — Real Time Food Prices</a>
+  </div>
+ </section>
+</main>
+
+<footer>
+ <div class="wrap">
+  <b>INDONESIA ECONOMIC INTELLIGENCE · OVERVIEW</b><br>
+  Dokumen ini merangkum kerangka dan asumsi yang telah dibahas dalam workspace. Angka skenario bukan ramalan resmi; snapshot historis harus diverifikasi kembali pada publikasi sumber sebelum digunakan untuk keputusan. Dataset World Bank RTFP dapat memuat hasil estimasi dan revisi. Atribusi sumber tetap diperlukan saat data digunakan kembali.<br><br>
+  <span id="stamp"></span> · File portal: <b>index.html</b> · Dashboard terkait: <b>dashboard.html</b> dan <b>dashboard-mikro.html</b>.
+ </div>
+</footer>
+<script>
+document.getElementById('stamp').textContent = 'Halaman dibuka: ' + new Date().toLocaleString('id-ID');
+</script>
+</body>
+</html>
