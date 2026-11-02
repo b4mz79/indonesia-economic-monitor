@@ -16,6 +16,9 @@
 body{margin:0;background:var(--bg);color:var(--text);
  font-family:Arial,Segoe UI,sans-serif}
 header{padding:28px 4vw;background:#14243b;border-bottom:1px solid var(--line)}
+.header-topline{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.home-link{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border:1px solid var(--line);border-radius:8px;color:var(--cyan);font-size:12px;font-weight:650;background:rgba(80,214,208,.05);text-decoration:none}
+.home-link:hover{background:rgba(80,214,208,.12);text-decoration:none}
 h1{font-size:clamp(22px,3vw,34px);margin:8px 0}
 h2{font-size:19px;margin:0 0 14px}
 h3{font-size:14px;margin:0 0 12px;color:#cbd8e8}
@@ -69,7 +72,10 @@ a{color:var(--blue)}
 </head>
 <body>
 <header>
- <div class="label">INDONESIA ECONOMIC INTELLIGENCE / HOUSEHOLD LEVEL</div>
+ <div class="header-topline">
+   <div class="label">INDONESIA ECONOMIC INTELLIGENCE / HOUSEHOLD LEVEL</div>
+   <a class="home-link" href="index.html" aria-label="Back to Home">← Back to Home</a>
+  </div>
  <h1>Household Cost & Basic Needs Dashboard</h1>
  <div class="label">Historical policy & price monitoring 2016–2026 | Scenario analysis 2027–2030</div>
 </header>
