@@ -35,9 +35,24 @@
 | `dashboard.html` | Dashboard makro | Sebagian besar angka dan asumsi ditanam langsung dalam JavaScript/HTML | Saat memperbarui data makro, audit array/label/sumber pada file ini dan README; belum ada satu CSV historis makro terpisah yang menjadi sumber tunggal |
 | `dashboard-mikro.html` | Dashboard mikro | Memuat file CSV lokal melalui `fetch()`; beberapa seri dikompresi dan didekode di browser | Pastikan nama file, path relatif, parser, dropdown, default filter, label sumber dan unit sesuai dataset terbaru |
 
-### Catatan penting tentang file pemangkasan FPDB
+### Script pemangkasan FPDB
 
-README publik saat baseline ini menjelaskan `trim_fpdb.py`, tetapi **file tersebut tidak terlihat pada daftar file root repository yang diperiksa pada 3 November 2026**. Jangan menganggap script itu tersedia atau menjalankan instruksi lama secara membabi buta. Sebelum update FPDB, periksa kembali apakah script ada di branch/commit terbaru. Jika tidak ada, pulihkan atau tulis ulang proses pemangkasan yang terdokumentasi, uji terhadap arsip sumber, dan commit script beserta dokumentasinya sebelum mengganti `fpdb.csv`.
+Script tersedia di root repository: [`trim_fpdb.py`](trim_fpdb.py).
+
+Jalankan dari root repository setelah CSV sumber diunduh dan diekstrak:
+
+```bash
+python trim_fpdb.py <csv-sumber.csv> fpdb_2016.csv
+```
+
+Di Windows, perintah `py -3 trim_fpdb.py <csv-sumber.csv> fpdb_2016.csv` juga dapat digunakan. Script:
+- mempertahankan kolom lokasi/tanggal yang dipakai dashboard dan seluruh kolom `c_*`;
+- membatasi tanggal mulai 1 Januari 2016;
+- memfilter `ISO3=IDN` jika kolom ISO3 tersedia;
+- menulis ke file output terpisah dan tidak menimpa file sumber;
+- menampilkan ringkasan jumlah baris, kolom, dan ukuran file.
+
+Periksa perubahan data dictionary sebelum menjalankan script jika penyedia mengubah nama atau definisi kolom. Script ini melakukan pemangkasan teknis, bukan validasi metodologi atau kualitas seluruh observasi. Jalankan QA pada output sebelum mengganti `fpdb.csv`.
 
 ## 3. Panduan sumber dan frekuensi
 
@@ -188,7 +203,7 @@ Jangan hanya menulis “dataset diperbarui”. Catat apa yang berubah, mengapa, 
 - Menegaskan pemisahan HET pangkalan vs harga pengecer dan larangan mengisi cakupan yang tidak tersedia.
 - Mencatat baseline LPG retail 19 catatan / 14 dari 38 provinsi.
 - Mencatat sumber FPDB World Bank yang digunakan: versi 2026-10-05, data sampai 2026-10-01.
-- Menandai bahwa `trim_fpdb.py` disebut dalam README, tetapi tidak ditemukan pada daftar file root yang diperiksa; perlu verifikasi/pemulihan sebelum update FPDB berikutnya.
+- Memulihkan `trim_fpdb.py` ke root repository dan menambahkan petunjuk penggunaan serta batas validasinya.
 - Memuat checklist QA dan format log untuk sesi pemeliharaan selanjutnya.
 
 ---
