@@ -17,6 +17,8 @@ Mengembangkan Indonesia Economic Monitor (IEM Project) dari dashboard statis ber
 | 3. Scenario vs Actual | Mulai Januari 2027 | Pembaruan aktual berkala dan perbandingan dengan lintasan stress test 2027–2030 | Tampilan aktual, skenario pembanding, deviasi, status rilis, tanggal pembaruan, dan catatan interpretasi |
 | 4. Otomasi selektif | Setelah sumber stabil | GitHub Actions untuk sumber dengan endpoint/unduhan stabil; validasi otomatis; perubahan diajukan sebagai commit/PR untuk review | Pipeline terjadwal yang dapat direproduksi, dengan log, QA, dan jejak perubahan |
 | 5. Evaluasi dan pengembangan forecast | Tahap lanjutan | Jika diperlukan, membangun forecast terpisah dengan metode, input, horizon, dan vintage eksplisit | Forecast vs Actual yang dapat dievaluasi secara metodologis; tidak mencampur forecast dengan stress scenario |
+| 6. Data release calendar | November–Desember 2026 | Menyusun kalender rilis resmi per indikator dan lembaga, termasuk frekuensi serta estimasi waktu rilis | Kalender rilis yang membantu membedakan data terlambat dari data yang memang belum waktunya terbit |
+| 7. Data quality & confidence | Desain mulai Desember 2026 | Menentukan indikator kualitas berdasarkan kelengkapan, keterbaruan, otoritas sumber, konsistensi metodologi, dan keterbandingan | Label kualitas transparan per seri; bukan skor kredibilitas semu atau probabilitas kebenaran |
 
 ## Cakupan pemantauan makro
 
@@ -73,3 +75,42 @@ Review akhir bulan mencakup:
 - [Project Background](PROJECT_BACKGROUND.md)
 - [Data Maintenance](DATA_MAINTENANCE.md)
 - [README dan metodologi](README.md)
+
+## Penguatan tata kelola monitoring
+
+### 1. Data Release Calendar
+
+Bangun kalender rilis untuk sumber primer, antara lain BPS, Bank Indonesia, Kementerian Keuangan, Kementerian ESDM, dan sumber resmi lain sesuai indikator. Catat lembaga, indikator/seri, frekuensi, periode referensi, tanggal rilis aktual, pola/jadwal rilis yang diumumkan, URL publikasi, serta status kalender (scheduled/expected/released/delayed/unknown).
+
+Tanggal perkiraan tidak boleh ditampilkan sebagai tanggal resmi jika lembaga belum mengumumkannya. Kalender berfungsi sebagai alat pemantauan; tidak semua indikator memiliki rilis bulanan.
+
+### 2. Data Quality & Confidence Indicator
+
+Setiap seri data perlu memiliki profil kualitas yang menjelaskan setidaknya:
+- **Source authority:** sumber primer/resmi atau sumber sekunder.
+- **Freshness:** umur data sejak periode observasi dan sejak tanggal rilis.
+- **Completeness:** kelengkapan periode, wilayah, kelompok, dan variabel yang relevan.
+- **Methodology consistency:** apakah definisi dan metode konsisten antarperiode.
+- **Comparability:** apakah seri layak dibandingkan dengan periode atau indikator lain.
+
+Pada tahap awal tampilkan status/keterangan per dimensi (misalnya high/medium/limited atau current/stale/incomplete) beserta alasan dan tanggal penilaian. Hindari satu skor gabungan yang memberi kesan presisi atau kepastian ilmiah yang tidak didukung metodologi. Kualitas sumber, kelengkapan data, dan keyakinan terhadap interpretasi harus tetap dibedakan.
+
+### 3. Checkpoint evaluasi bulanan
+
+Selain review data pada akhir bulan, lakukan checkpoint evaluasi pada tanggal 5 bulan berikutnya. Tujuannya:
+- meninjau hasil dan usulan dari monthly data review;
+- memeriksa rilis yang tertunda atau revisi yang baru terbit;
+- menilai kelengkapan provenance dan hasil quality checks;
+- meninjau deviasi Scenario vs Actual yang sudah dapat dibandingkan;
+- memperbarui status roadmap, isu terbuka, dan prioritas bulan berjalan.
+
+Checkpoint tanggal 5 adalah evaluasi tindak lanjut, bukan siklus pengambilan data kedua yang mengasumsikan semua lembaga sudah merilis data.
+
+### Jadwal operasional
+
+| Waktu | Kegiatan | Output |
+|---|---|---|
+| Akhir bulan | IEM Monthly Data Review | Inventaris rilis/revisi, usulan pembaruan, daftar data tertunda, dan catatan deviasi |
+| Tanggal 5 bulan berikutnya | IEM Monthly Review Checkpoint | Evaluasi hasil review, verifikasi tindak lanjut, pembaruan status roadmap dan isu terbuka |
+
+
