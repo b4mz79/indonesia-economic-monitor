@@ -209,3 +209,43 @@ Jangan hanya menulis “dataset diperbarui”. Catat apa yang berubah, mengapa, 
 ---
 
 *Dokumen internal proyek untuk menjaga konsistensi kerja. Perbarui dokumen ini ketika struktur file, skema, sumber, proses ETL, cakupan, atau metodologi berubah.*
+
+## Pemantauan skenario vs realisasi (Scenario vs Actual)
+
+### Tujuan
+
+Pengembangan berikutnya adalah membangun pemantauan berkala yang membandingkan lintasan stress test makro 2027–2030 dengan realisasi indikator ketika data aktual tersedia. Untuk versi saat ini, gunakan istilah **Scenario vs Actual**, bukan *Forecast vs Actual*: lintasan 2027–2030 yang tertanam di `dashboard.html` merupakan skenario kondisional, bukan forecast resmi atau proyeksi probabilistik.
+
+### Prinsip pencatatan
+
+- **Jangan menimpa skenario lama.** Simpan setiap versi skenario sebagai *vintage* dengan tanggal penerbitan, periode acuan, asumsi, nilai, satuan, sumber, dan catatan perubahan.
+- Simpan realisasi secara terpisah dari skenario. Setiap observasi aktual wajib memiliki indikator, periode observasi, nilai, satuan, tanggal rilis/akses, sumber primer, URL, status (observed/revised/estimated), dan catatan cakupan.
+- Bandingkan hanya observasi yang definisi, satuan, periode, dan cakupannya sebanding. Tandai perbedaan frekuensi dan perimeter; jangan memaksakan perbandingan tahunan dengan snapshot bulanan, YTD, year-end, atau yoy.
+- Jangan menginterpolasi atau mengisi periode yang belum dirilis. Tampilkan *not yet released*, *not comparable*, atau *data unavailable* sesuai keadaan.
+- Simpan revisi data dan revisi vintage skenario agar evaluasi historis dapat direproduksi.
+- Selisih skenario–aktual adalah ukuran deviasi terhadap asumsi, bukan otomatis bukti bahwa skenario atau model forecast “salah”; jelaskan perubahan kondisi dan asumsi yang relevan.
+
+### Siklus pembaruan bulanan
+
+Pada akhir setiap bulan, lakukan *data release review* untuk enam kelompok indikator makro: (1) pertumbuhan dan inflasi; (2) nilai tukar dan cadangan devisa; (3) energi/ICP; (4) perdagangan dan neraca eksternal; (5) fiskal, defisit, utang, subsidi/kompensasi; serta (6) indikator geopolitik/ketahanan pasokan yang relevan.
+
+1. Periksa apakah sumber primer telah menerbitkan data baru atau revisi.
+2. Catat tanggal rilis, periode data, satuan, cakupan, metodologi, dan URL sumber.
+3. Perbarui hanya seri yang benar-benar memiliki observasi baru; seri yang belum rilis tetap tidak berubah.
+4. Jalankan pemeriksaan kualitas: duplikasi, nilai kosong, perubahan satuan, lonjakan tidak wajar, konsistensi periode, dan keterbandingan perimeter.
+5. Bandingkan observasi aktual dengan vintage skenario yang relevan, lalu dokumentasikan deviasi dan penjelasannya.
+6. Buat ringkasan perubahan dan daftar data yang belum tersedia. Perubahan dataset/dashboard hanya dipublikasikan setelah validasi dan review.
+
+### Tahapan implementasi
+
+- **Persiapan — November 2026:** inventarisasi sumber primer per indikator; tetapkan skema data, definisi, satuan, frekuensi, serta tanggal rilis yang lazim. Bekukan lintasan stress test yang ada sebagai vintage awal dan beri identitas/tanggal yang jelas.
+- **Baseline — Desember 2026:** siapkan tabel vintage skenario dan tabel observasi aktual; lakukan uji pembaruan bulanan pertama sebagai *dry run*. Belum ada klaim evaluasi akurasi sebelum periode aktual yang sebanding tersedia.
+- **Monitoring — mulai Januari 2027:** jalankan pembaruan akhir bulan. Tampilkan aktual, skenario pembanding, deviasi, status rilis, dan tanggal pembaruan; gunakan label *Scenario vs Actual*.
+- **Evaluasi forecast — tahap lanjutan:** istilah *Forecast vs Actual* baru digunakan jika proyek menambahkan forecast yang benar-benar memiliki model/metode, sumber input, horizon, tanggal penerbitan, dan vintage yang terdokumentasi. Evaluasi forecast dilakukan terhadap realisasi final/revisi dengan memperhatikan horizon dan definisi indikator.
+
+### Arsitektur otomasi yang direncanakan
+
+Repository GitHub Pages bersifat statis; tidak ada database/backend yang berjalan terus-menerus. Tahap awal menggunakan review bulanan berbantuan untuk mengidentifikasi rilis baru dan menghasilkan usulan pembaruan yang dapat diperiksa. Setelah sumber dan format tiap seri stabil, otomasi dapat dipindahkan ke GitHub Actions terjadwal untuk mengambil sumber yang memang menyediakan endpoint/unduhan stabil, menjalankan validasi, dan membuka perubahan dataset sebagai commit/PR. Jangan melakukan *silent auto-publish* untuk data yang membutuhkan interpretasi manual atau memiliki perubahan metodologi.
+
+Otomasi tidak boleh mengarang nilai, menganggap belum ada rilis sebagai nol, mengganti data historis tanpa jejak, atau mengubah vintage skenario sebelumnya. Setiap pembaruan yang dipublikasikan harus menyertakan provenance dan catatan perubahan.
+
