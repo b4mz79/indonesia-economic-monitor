@@ -27,7 +27,7 @@ Narasi mengenai asal-usul proyek, konteks geopolitik, jalur transmisi risiko ke 
 
 ## Pemeliharaan dataset
 
-Panduan operasional untuk memperbarui seluruh dataset, menjaga provenance dan metodologi, melakukan quality assurance, serta mencatat perubahan tersedia di [DATA_MAINTENANCE.md](DATA_MAINTENANCE.md). Dokumen ini juga menjadi catatan kesinambungan pemeliharaan untuk sesi pengembangan berikutnya.
+Panduan operasional untuk memperbarui seluruh dataset, menjaga provenance dan metodologi, melakukan quality assurance, serta mencatat perubahan tersedia di [DATA_MAINTENANCE.md](DATA_MAINTENANCE.md). Dokumen ini juga menjadi catatan kesinambungan pemeliharaan untuk sesi pengembangan berikutnya. Roadmap tahapan pengembangan dan prioritas berikutnya tersedia di [ROADMAP.md](ROADMAP.md).
 
 ## Tujuan dan ruang lingkup
 
