@@ -21,6 +21,10 @@ Navigasi utama:
 | Indonesia Economic Risk Dashboard | [`dashboard.html`](dashboard.html) | Kerangka indikator risiko makro dan stress test 2027–2030 |
 | Household Cost & Basic Needs Dashboard | [`dashboard-mikro.html`](dashboard-mikro.html) | Harga BBM, tarif PLN, LPG subsidi/nonsubsidi, pengangguran, upah, kemiskinan, daya beli, ketimpangan, pangan, dan simulator biaya |
 
+## Pemeliharaan dataset
+
+Panduan operasional untuk memperbarui seluruh dataset, menjaga provenance dan metodologi, melakukan quality assurance, serta mencatat perubahan tersedia di [DATA_MAINTENANCE.md](DATA_MAINTENANCE.md). Dokumen ini juga menjadi catatan kesinambungan pemeliharaan untuk sesi pengembangan berikutnya.
+
 ## Tujuan dan ruang lingkup
 
 Proyek ini menghubungkan risiko eksternal dengan konsekuensi ekonomi domestik melalui jalur transmisi berikut:
