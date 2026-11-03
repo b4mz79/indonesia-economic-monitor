@@ -98,6 +98,12 @@ a:hover {text-decoration:underline}
   .card,.kpi {break-inside:avoid}
   .toolbar {display:none}
 }
+
+#scrollToTop{position:fixed;right:22px;bottom:22px;z-index:1000;display:flex;align-items:center;gap:8px;padding:11px 14px;border:1px solid #28384e;border-radius:999px;background:#19263a;color:#22d3ee;font:600 12px/1.2 inherit;box-shadow:0 8px 24px rgba(0,0,0,.28);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .2s ease,transform .2s ease,visibility .2s}
+#scrollToTop.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
+#scrollToTop:focus-visible{outline:2px solid #22d3ee;outline-offset:3px}
+@media(max-width:600px){#scrollToTop{right:14px;bottom:14px;padding:10px 12px}}
+@media(prefers-reduced-motion:reduce){#scrollToTop{transition:none}}
 </style>
 </head>
 <body>
@@ -503,6 +509,19 @@ document.getElementById("historyToggle").addEventListener("change",e=>{
     c.update();
   });
 });
+</script>
+
+<button id="scrollToTop" type="button" aria-label="Scroll to top" title="Kembali ke atas">↑ <span>Kembali ke atas</span></button>
+<script>
+(()=>{
+ const button=document.getElementById("scrollToTop");
+ if(!button)return;
+ const threshold=300;
+ const updateVisibility=()=>button.classList.toggle("is-visible",window.scrollY>threshold);
+ window.addEventListener("scroll",updateVisibility,{passive:true});
+ updateVisibility();
+ button.addEventListener("click",()=>window.scrollTo({top:0,behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}));
+})();
 </script>
 </body>
 </html>
