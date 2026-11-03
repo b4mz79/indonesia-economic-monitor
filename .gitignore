@@ -1,0 +1,5 @@
+*.png
+data_historis_dan_stress_2016_2030.csv
+fpdb_2016.csv
+fpdb_full_backup.csv
+trim_fpdb_v0.py
